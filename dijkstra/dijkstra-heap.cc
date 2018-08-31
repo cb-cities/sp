@@ -24,19 +24,19 @@ int main(int argc, char** argv) {
     v2edge.push_back(edge);
   };
 
-  const auto remove_edge = [&](std::shared_ptr<Edge> e) -> void {
-    edges.erase(remove(edges.begin(), edges.end(), e), edges.end());
-    std::vector<std::shared_ptr<Edge>>& v1e = vertex_edges[e->first.first];
-    std::vector<std::shared_ptr<Edge>>& v2e = vertex_edges[e->first.second];
-    v1e.erase(remove(v1e.begin(), v1e.end(), e), v1e.end());
-    v2e.erase(remove(v2e.begin(), v2e.end(), e), v2e.end());
+  const auto remove_edge = [&](std::shared_ptr<Edge> edge) -> void {
+    edges.erase(remove(edges.begin(), edges.end(), edge), edges.end());
+    std::vector<std::shared_ptr<Edge>>& v1edge = vertex_edges[edge->first.first];
+    std::vector<std::shared_ptr<Edge>>& v2edge = vertex_edges[edge->first.second];
+    v1edge.erase(remove(v1edge.begin(), v1edge.end(), edge), v1edge.end());
+    v2edge.erase(remove(v2edge.begin(), v2edge.end(), edge), v2edge.end());
   };
 
-  const auto make_edge = [](vertex_t v1, vertex_t v2,
+  const auto make_edge = [](vertex_t vertex1, vertex_t vertex2,
                             weight_t weight) -> std::shared_ptr<Edge> {
-    if (v1 > v2) std::swap(v1, v2);
+    if (vertex1 > vertex2) std::swap(vertex1, vertex2);
     return std::make_shared<Edge>(
-        std::make_pair(std::make_pair(v1, v2), weight));
+        std::make_pair(std::make_pair(vertex1, vertex2), weight));
   };
 
   // set up a simple graph
@@ -137,7 +137,7 @@ int main(int argc, char** argv) {
     if (dest == u) break;
 
     // neighbor edge e
-    for (std::shared_ptr<Edge> edge : vertex_edges[u]) {
+    for (const std::shared_ptr<Edge>& edge : vertex_edges[u]) {
       // *std::shared_ptr<Edge> is {{v1, v2}, weight}
       // neighbor
       const vertex_t neighbor =
@@ -174,7 +174,7 @@ int main(int argc, char** argv) {
   // building a path requires calling prev[n] iteratively
   // and pushing the result onto a stack
 
-  for (std::pair<vertex_t, weight_t> p : dist) {
+  for (const std::pair<vertex_t, weight_t>& p : dist) {
     std::cout << p.first << " dist " << p.second << std::endl;
   }
 }
