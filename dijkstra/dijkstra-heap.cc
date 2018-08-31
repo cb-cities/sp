@@ -1,5 +1,7 @@
+#include <fstream>
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -39,6 +41,42 @@ int main(int argc, char** argv) {
         std::make_pair(std::make_pair(vertex1, vertex2), weight));
   };
 
+  
+  // Read file
+  std::string filename = argv[1];
+  std::fstream file;
+  file.open(filename.c_str(), std::ios::in);
+  try {
+    if (file.is_open() && file.good()) {
+      // Line
+      std::string line;
+      bool header = true;
+      double ignore;
+      while (std::getline(file, line)) {
+        std::istringstream istream(line);
+        int v1, v2;
+        double weight;
+        // ignore comment lines (# or !) or blank lines
+        if ((line.find('#') == std::string::npos) &&
+            (line.find('%') == std::string::npos) && (line != "")) {
+          if (header) {
+            // Ignore header
+            while (istream.good()) istream >> ignore;
+            header = false;
+          }
+          while (istream.good()) {
+            // Read vertices edges and weights
+            istream >> v1 >> v2 >> weight;
+            add_edge(make_edge(v1, v2, weight));
+          }
+        }
+      }
+    }
+  } catch (std::exception& exception) {
+    std::cout << "Read mtx file: " << exception.what() << "\n";
+  }
+
+#if 0
   // set up a simple graph
   add_edge(make_edge(1, 2, 7.5));
   add_edge(make_edge(1, 3, 9.1));
@@ -49,7 +87,7 @@ int main(int argc, char** argv) {
   add_edge(make_edge(3, 6, 2.4));
   add_edge(make_edge(4, 5, 6.2));
   add_edge(make_edge(5, 6, 9.7));
-
+#endif
   // source vertex
   const vertex_t source = 1;
   const vertex_t dest = -1;
@@ -127,8 +165,8 @@ int main(int argc, char** argv) {
   };
 
   while (!dist_pq.empty()) {
-    // u is current vertex
     pop_heap(dist_pq.begin(), dist_pq.end(), min_comp);
+    // u is current vertex
     vertex_t u = dist_pq.back().first;
     weight_t udist = dist_pq.back().second;
     dist_pq.pop_back();
