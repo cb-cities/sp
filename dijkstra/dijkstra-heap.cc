@@ -4,53 +4,51 @@
 #include <unordered_map>
 #include <vector>
 
+using vertex_t = int;     // some sort of id
+using weight_t = double;  // some type that can be added with +
+// {{v1, v2}, weight}
+using Edge = std::pair<std::pair<vertex_t, vertex_t>, weight_t>;
+
 int main(int argc, char** argv) {
 
   // dijkstra's algorithm with a heap priority queue
-
-  using vertex_t = int;     // some sort of id
-  using weight_t = double;  // some type that can be added with +
-  // {{v1, v2}, weight}
-  using edge = std::pair<std::pair<vertex_t, vertex_t>, weight_t>;
   // adjacency list with iteration over each edge
-  std::vector<std::shared_ptr<edge>> edges;
-  std::unordered_map<vertex_t, std::vector<std::shared_ptr<edge>>> vertex_edges;
+  std::vector<std::shared_ptr<Edge>> edges;
+  std::unordered_map<vertex_t, std::vector<std::shared_ptr<Edge>>> vertex_edges;
 
-  const auto add_edge = [&](std::shared_ptr<edge> e) -> void {
-    edges.push_back(e);
-    std::vector<std::shared_ptr<edge>>& v1e = vertex_edges[e->first.first];
-    std::vector<std::shared_ptr<edge>>& v2e = vertex_edges[e->first.second];
-    v1e.push_back(e);
-    v2e.push_back(e);
+  const auto add_edge = [&](std::shared_ptr<Edge> edge) -> void {
+    edges.push_back(edge);
+    std::vector<std::shared_ptr<Edge>>& v1edge = vertex_edges[edge->first.first];
+    std::vector<std::shared_ptr<Edge>>& v2edge = vertex_edges[edge->first.second];
+    v1edge.push_back(edge);
+    v2edge.push_back(edge);
   };
 
-  const auto remove_edge = [&](std::shared_ptr<edge> e) -> void {
+  const auto remove_edge = [&](std::shared_ptr<Edge> e) -> void {
     edges.erase(remove(edges.begin(), edges.end(), e), edges.end());
-    std::vector<std::shared_ptr<edge>>& v1e = vertex_edges[e->first.first];
-    std::vector<std::shared_ptr<edge>>& v2e = vertex_edges[e->first.second];
+    std::vector<std::shared_ptr<Edge>>& v1e = vertex_edges[e->first.first];
+    std::vector<std::shared_ptr<Edge>>& v2e = vertex_edges[e->first.second];
     v1e.erase(remove(v1e.begin(), v1e.end(), e), v1e.end());
     v2e.erase(remove(v2e.begin(), v2e.end(), e), v2e.end());
   };
 
   const auto make_edge = [](vertex_t v1, vertex_t v2,
-                            weight_t weight) -> std::shared_ptr<edge> {
-    if (v1 > v2) {
-      std::swap(v1, v2);
-    }
-    return std::make_shared<edge>(
+                            weight_t weight) -> std::shared_ptr<Edge> {
+    if (v1 > v2) std::swap(v1, v2);
+    return std::make_shared<Edge>(
         std::make_pair(std::make_pair(v1, v2), weight));
   };
 
   // set up a simple graph
-  add_edge(make_edge(1, 2, 7));
-  add_edge(make_edge(1, 3, 9));
-  add_edge(make_edge(1, 6, 14));
-  add_edge(make_edge(2, 3, 10));
-  add_edge(make_edge(2, 4, 15));
-  add_edge(make_edge(3, 4, 11));
-  add_edge(make_edge(3, 6, 2));
-  add_edge(make_edge(4, 5, 6));
-  add_edge(make_edge(5, 6, 9));
+  add_edge(make_edge(1, 2, 7.5));
+  add_edge(make_edge(1, 3, 9.1));
+  add_edge(make_edge(1, 6, 14.3));
+  add_edge(make_edge(2, 3, 10.9));
+  add_edge(make_edge(2, 4, 15.5));
+  add_edge(make_edge(3, 4, 11.6));
+  add_edge(make_edge(3, 6, 2.4));
+  add_edge(make_edge(4, 5, 6.2));
+  add_edge(make_edge(5, 6, 9.7));
 
   // source vertex
   const vertex_t source = 1;
@@ -136,17 +134,15 @@ int main(int argc, char** argv) {
     dist_pq.pop_back();
 
     // BREAK HERE IF DESTINATION FOUND
-    if (dest == u) {
-      break;
-    }
+    if (dest == u) break;
 
     // neighbor edge e
-    for (std::shared_ptr<edge> e : vertex_edges[u]) {
-      // *std::shared_ptr<edge> is {{v1, v2}, weight}
+    for (std::shared_ptr<Edge> edge : vertex_edges[u]) {
+      // *std::shared_ptr<Edge> is {{v1, v2}, weight}
       // neighbor
       const vertex_t neighbor =
-          e->first.first == u ? e->first.second : e->first.first;
-      weight_t altdist = udist + e->second;
+          edge->first.first == u ? edge->first.second : edge->first.first;
+      weight_t altdist = udist + edge->second;
       // if not checked or better path
       if (dist.find(neighbor) == dist.end() || altdist < dist[neighbor]) {
         prev[neighbor] = u;
