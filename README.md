@@ -16,9 +16,11 @@
 
 1. Run `make clean && make -jN` (where N is the number of cores).
 
+## Run 
 
-## Output
-> Sample shortest path for a simple graph
+* To run the dijkstra shortest path `./sp ../sf.mtx`, because the executable `sp` would be generated inside the build directory. 
+
+* Running just `./sp` will run the shortest path for the sample graph whose output is:
 
 ```
 5 dist 21.2

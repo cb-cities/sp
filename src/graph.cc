@@ -71,6 +71,7 @@ void Graph::read_graph_matrix_market(const std::string& filename,
   } catch (std::exception& exception) {
     std::cout << "Read matrix market file: " << exception.what() << "\n";
   }
+  std::cout << "Graph size: " << this->edges_.size() << "\n";
 }
 
 void Graph::generate_simple_graph(bool directed) {
