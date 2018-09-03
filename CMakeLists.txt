@@ -50,11 +50,11 @@ include_directories(BEFORE
 )
 
 # sp executable
-#SET(sp_src
-#  ${sp_SOURCE_DIR}/src/graph.cc
-#)
+SET(sp_src
+  ${sp_SOURCE_DIR}/src/graph.cc
+)
 
-add_executable(sp ${sp_SOURCE_DIR}/src/main.cc)
+add_executable(sp ${sp_src} ${sp_SOURCE_DIR}/src/main.cc)
 
 
 # Coverage
