@@ -77,7 +77,7 @@ void Graph::read_graph_matrix_market(const std::string& filename) {
       }
     }
   } catch (std::exception& exception) {
-    std::cout << "Read mtx file: " << exception.what() << "\n";
+    std::cout << "Read matrix market file: " << exception.what() << "\n";
   }
 }
 
