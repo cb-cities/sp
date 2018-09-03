@@ -6,14 +6,15 @@
 #include <unordered_map>
 #include <vector>
 
-using vertex_t = int;     // some sort of id
-using weight_t = double;  // some type that can be added with +
-// {{v1, v2}, weight}
-using Edge = std::pair<std::pair<vertex_t, vertex_t>, weight_t>;
-
 class Graph {
-
  public:
+  using vertex_t = int;     // Vertex id type
+  using weight_t = double;  // Weight type, that can be added with +
+  // Edge
+  // {{v1, v2}, weight}
+  using Edge = std::pair<std::pair<vertex_t, vertex_t>, weight_t>;
+
+  //! Make edge
   std::shared_ptr<Edge> make_edge(vertex_t vertex1, vertex_t vertex2,
                                   weight_t weight) {
     if (vertex1 > vertex2) std::swap(vertex1, vertex2);
@@ -21,26 +22,75 @@ class Graph {
         std::make_pair(std::make_pair(vertex1, vertex2), weight));
   }
 
+  //! Add edge
   void add_edge(const std::shared_ptr<Edge>& edge) {
-    edges.push_back(edge);
+    edges_.emplace_back(edge);
     std::vector<std::shared_ptr<Edge>>& v1edge =
-        vertex_edges[edge->first.first];
+        vertex_edges_[edge->first.first];
     std::vector<std::shared_ptr<Edge>>& v2edge =
-        vertex_edges[edge->first.second];
-    v1edge.push_back(edge);
-    v2edge.push_back(edge);
+        vertex_edges_[edge->first.second];
+    v1edge.emplace_back(edge);
+    v2edge.emplace_back(edge);
   }
 
   void remove_edge(const std::shared_ptr<Edge>& edge) {
-    edges.erase(remove(edges.begin(), edges.end(), edge), edges.end());
+    edges_.erase(remove(edges_.begin(), edges_.end(), edge), edges_.end());
     std::vector<std::shared_ptr<Edge>>& v1edge =
-        vertex_edges[edge->first.first];
+        vertex_edges_[edge->first.first];
     std::vector<std::shared_ptr<Edge>>& v2edge =
-        vertex_edges[edge->first.second];
+        vertex_edges_[edge->first.second];
     v1edge.erase(remove(v1edge.begin(), v1edge.end(), edge), v1edge.end());
     v2edge.erase(remove(v2edge.begin(), v2edge.end(), edge), v2edge.end());
   }
 
+  //! Read MatrixMarket graph file format
+  void read_graph_matrix_market(const std::string& filename) {
+    std::fstream file;
+    file.open(filename.c_str(), std::ios::in);
+    try {
+      if (file.is_open() && file.good()) {
+        // Line
+        std::string line;
+        bool header = true;
+        double ignore;
+        while (std::getline(file, line)) {
+          std::istringstream istream(line);
+          int v1, v2;
+          double weight;
+          // ignore comment lines (# or !) or blank lines
+          if ((line.find('#') == std::string::npos) &&
+              (line.find('%') == std::string::npos) && (line != "")) {
+            if (header) {
+              // Ignore header
+              while (istream.good()) istream >> ignore;
+              header = false;
+            }
+            while (istream.good()) {
+              // Read vertices edges and weights
+              istream >> v1 >> v2 >> weight;
+              this->add_edge(this->make_edge(v1, v2, weight));
+            }
+          }
+        }
+      }
+    } catch (std::exception& exception) {
+      std::cout << "Read mtx file: " << exception.what() << "\n";
+    }
+  }
+
+  void generate_simple_graph() {
+    // set up a simple graph
+    this->add_edge(this->make_edge(1, 2, 7.5));
+    this->add_edge(this->make_edge(1, 3, 9.1));
+    this->add_edge(this->make_edge(1, 6, 14.3));
+    this->add_edge(this->make_edge(2, 3, 10.9));
+    this->add_edge(this->make_edge(2, 4, 15.5));
+    this->add_edge(this->make_edge(3, 4, 11.6));
+    this->add_edge(this->make_edge(3, 6, 2.4));
+    this->add_edge(this->make_edge(4, 5, 6.2));
+    this->add_edge(this->make_edge(5, 6, 9.7));
+  }
+  
   void dijkstra() {
     // source vertex
     const vertex_t source = 1;
@@ -129,7 +179,7 @@ class Graph {
       if (dest == u) break;
 
       // neighbor edge e
-      for (const std::shared_ptr<Edge>& edge : vertex_edges[u]) {
+      for (const std::shared_ptr<Edge>& edge : vertex_edges_[u]) {
         // *std::shared_ptr<Edge> is {{v1, v2}, weight}
         // neighbor
         const vertex_t neighbor =
@@ -158,75 +208,31 @@ class Graph {
         }
       }
     }
-
     // for each node n:
     // if algorithm doesn't stop after finding path to destination
     //     dist[n] contains the distance to it
     // prev[n] contains the node before it
     // building a path requires calling prev[n] iteratively
     // and pushing the result onto a stack
-    for (const std::pair<vertex_t, weight_t>& p : dist) {
+    for (const std::pair<vertex_t, weight_t>& p : dist)
       std::cout << p.first << " dist " << p.second << std::endl;
-    }
   }
 
  private:
   // dijkstra's algorithm with a heap priority queue
   // adjacency list with iteration over each edge
-  std::vector<std::shared_ptr<Edge>> edges;
-  std::unordered_map<vertex_t, std::vector<std::shared_ptr<Edge>>> vertex_edges;
+  std::vector<std::shared_ptr<Edge>> edges_;
+  std::unordered_map<vertex_t, std::vector<std::shared_ptr<Edge>>> vertex_edges_;
 };
 
 int main(int argc, char** argv) {
-
   auto graph = std::make_shared<Graph>();
-
-  // Read file
-  std::string filename = argv[1];
-  std::fstream file;
-  file.open(filename.c_str(), std::ios::in);
-  try {
-    if (file.is_open() && file.good()) {
-      // Line
-      std::string line;
-      bool header = true;
-      double ignore;
-      while (std::getline(file, line)) {
-        std::istringstream istream(line);
-        int v1, v2;
-        double weight;
-        // ignore comment lines (# or !) or blank lines
-        if ((line.find('#') == std::string::npos) &&
-            (line.find('%') == std::string::npos) && (line != "")) {
-          if (header) {
-            // Ignore header
-            while (istream.good()) istream >> ignore;
-            header = false;
-          }
-          while (istream.good()) {
-            // Read vertices edges and weights
-            istream >> v1 >> v2 >> weight;
-            graph->add_edge(graph->make_edge(v1, v2, weight));
-          }
-        }
-      }
-    }
-  } catch (std::exception& exception) {
-    std::cout << "Read mtx file: " << exception.what() << "\n";
-  }
-
-#if 0
-  // set up a simple graph
-  add_edge(make_edge(1, 2, 7.5));
-  add_edge(make_edge(1, 3, 9.1));
-  add_edge(make_edge(1, 6, 14.3));
-  add_edge(make_edge(2, 3, 10.9));
-  add_edge(make_edge(2, 4, 15.5));
-  add_edge(make_edge(3, 4, 11.6));
-  add_edge(make_edge(3, 6, 2.4));
-  add_edge(make_edge(4, 5, 6.2));
-  add_edge(make_edge(5, 6, 9.7));
-#endif
+  if (argc > 1) {
+    // Read MatrixMarket file
+    std::string filename = argv[1];
+    graph->read_graph_matrix_market(filename);
+  } else
+    graph->generate_simple_graph();
 
   graph->dijkstra();
 }
