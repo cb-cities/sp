@@ -1,6 +1,24 @@
 # Dijkstra Binary Heap Queue
+> CB-Cities
 
-`g++ main.cc -o heap`
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cb-geo/sp/develop/license.md)
+[![Developer docs](https://img.shields.io/badge/developer-docs-blue.svg)](http://cb-geo.github.io/sp)
+[![User docs](https://img.shields.io/badge/user-docs-blue.svg)](https://sp.cb-geo.com/)
+[![CircleCI](https://circleci.com/gh/cb-geo/sp.svg?style=svg)](https://circleci.com/gh/cb-geo/sp)
+[![codecov](https://codecov.io/gh/cb-geo/sp/branch/develop/graph/badge.svg)](https://codecov.io/gh/cb-geo/sp)
+[![](https://img.shields.io/github/issues-raw/cb-geo/sp.svg)](https://github.com/cb-geo/sp/issues)
+[![Project management](https://img.shields.io/badge/projects-view-ff69b4.svg)](https://github.com/cb-geo/sp/projects/)
+
+
+## Compile
+
+0. Run `mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release /path/to/CMakeLists.txt`.
+
+1. Run `make clean && make -jN` (where N is the number of cores).
+
+
+## Output
+> Sample shortest path for a simple graph
 
 ```
 5 dist 21.2
