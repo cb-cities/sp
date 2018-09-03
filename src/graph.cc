@@ -14,15 +14,6 @@ inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
                             Graph::weight_t weight) {
   auto edge = this->make_edge(vertex1, vertex2, weight);
   edges_.emplace_back(edge);
-  /*
-  std::vector<std::shared_ptr<Graph::Edge>>& v1edge =
-      vertex_edges_[edge->first.first];
-  std::vector<std::shared_ptr<Graph::Edge>>& v2edge =
-      vertex_edges_[edge->first.second];
-  v1edge.emplace_back(edge);
-  v2edge.emplace_back(edge);
-
-  */
   // Vertex 1
   auto vertex1_edges = vertex_edges_[vertex1];
   vertex1_edges.emplace_back(edge);
@@ -94,12 +85,7 @@ void Graph::generate_simple_graph() {
   this->add_edge(5, 6, 9.7);
 }
 
-void Graph::dijkstra() {
-  // source vertex
-  const Graph::vertex_t source = 1;
-  const Graph::vertex_t dest = -1;
-  // const Graph::vertex_t dest = 5;
-
+void Graph::dijkstra(Graph::vertex_t source, Graph::vertex_t dest) {
   std::unordered_map<Graph::vertex_t, Graph::vertex_t> prev;
   // parallel map and priority queue
   // {vertex, distance}
@@ -169,7 +155,6 @@ void Graph::dijkstra() {
             break;
           }
         }
-
         return i;
       };
 
@@ -180,7 +165,7 @@ void Graph::dijkstra() {
     Graph::weight_t udist = dist_pq.back().second;
     dist_pq.pop_back();
 
-    // BREAK HERE IF DESTINATION FOUND
+    // break if destination is found
     if (dest == u) break;
 
     // neighbor edge e

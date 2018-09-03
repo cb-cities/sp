@@ -30,7 +30,7 @@ class Graph {
   //! Generate a simple graph
   void generate_simple_graph();
   //! Run shortest path
-  void dijkstra();
+  void dijkstra(vertex_t source, vertex_t dest);
 
  private:
   // dijkstra's algorithm with a heap priority queue

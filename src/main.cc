@@ -12,5 +12,5 @@ int main(int argc, char** argv) {
     // Generate a simple graph
     graph->generate_simple_graph();
   }
-  graph->dijkstra();
+  graph->dijkstra(1, -1);
 }
