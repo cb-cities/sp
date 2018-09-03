@@ -1,8 +1,9 @@
 #include "graph.h"
 
 //! Make edge
-std::shared_ptr<Graph::Edge> Graph::make_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
-                                       Graph::weight_t weight) {
+std::shared_ptr<Graph::Edge> Graph::make_edge(Graph::vertex_t vertex1,
+                                              Graph::vertex_t vertex2,
+                                              Graph::weight_t weight) {
   if (vertex1 > vertex2) std::swap(vertex1, vertex2);
   return std::make_shared<Graph::Edge>(
       std::make_pair(std::make_pair(vertex1, vertex2), weight));
@@ -11,7 +12,8 @@ std::shared_ptr<Graph::Edge> Graph::make_edge(Graph::vertex_t vertex1, Graph::ve
 //! Add edge
 void Graph::add_edge(const std::shared_ptr<Graph::Edge>& edge) {
   edges_.emplace_back(edge);
-  std::vector<std::shared_ptr<Graph::Edge>>& v1edge = vertex_edges_[edge->first.first];
+  std::vector<std::shared_ptr<Graph::Edge>>& v1edge =
+      vertex_edges_[edge->first.first];
   std::vector<std::shared_ptr<Graph::Edge>>& v2edge =
       vertex_edges_[edge->first.second];
   v1edge.emplace_back(edge);
@@ -20,7 +22,8 @@ void Graph::add_edge(const std::shared_ptr<Graph::Edge>& edge) {
 
 void Graph::remove_edge(const std::shared_ptr<Graph::Edge>& edge) {
   edges_.erase(remove(edges_.begin(), edges_.end(), edge), edges_.end());
-  std::vector<std::shared_ptr<Graph::Edge>>& v1edge = vertex_edges_[edge->first.first];
+  std::vector<std::shared_ptr<Graph::Edge>>& v1edge =
+      vertex_edges_[edge->first.first];
   std::vector<std::shared_ptr<Graph::Edge>>& v2edge =
       vertex_edges_[edge->first.second];
   v1edge.erase(remove(v1edge.begin(), v1edge.end(), edge), v1edge.end());
@@ -96,61 +99,63 @@ void Graph::dijkstra() {
   const auto lchild = [](size_t i) { return 2 * i + 1; };
   const auto rchild = [](size_t i) { return 2 * i + 2; };
 
-  const auto min_comp = [](const std::pair<Graph::vertex_t, Graph::weight_t>& d1,
-                           const std::pair<Graph::vertex_t, Graph::weight_t>& d2) {
-    // by default it makes a max heap
-    // so we reverse the operation
-    return d1.second > d2.second;
-  };
+  const auto min_comp =
+      [](const std::pair<Graph::vertex_t, Graph::weight_t>& d1,
+         const std::pair<Graph::vertex_t, Graph::weight_t>& d2) {
+        // by default it makes a max heap
+        // so we reverse the operation
+        return d1.second > d2.second;
+      };
 
-  const auto bubble = [&](std::vector<std::pair<Graph::vertex_t, Graph::weight_t>>& heap,
-                          size_t i) {
-    size_t pi, lc, rc;
-    // bubble up if it's compared wrongly with its parent
-    while (true) {
-      // condition testing
-      pi = parent(i);
-      if (pi == i || min_comp(heap[i], heap[pi])) {
-        break;
-      }
+  const auto bubble =
+      [&](std::vector<std::pair<Graph::vertex_t, Graph::weight_t>>& heap,
+          size_t i) {
+        size_t pi, lc, rc;
+        // bubble up if it's compared wrongly with its parent
+        while (true) {
+          // condition testing
+          pi = parent(i);
+          if (pi == i || min_comp(heap[i], heap[pi])) {
+            break;
+          }
 
-      swap(heap[i], heap[pi]);
-      i = pi;
-    }
+          swap(heap[i], heap[pi]);
+          i = pi;
+        }
 
-    // bubble down if it's compared wrongly with either child
-    while (true) {
-      lc = lchild(i);
-      rc = rchild(i);
-      if (lc < heap.size()) {
-        // left child exists
-        if (min_comp(heap[lc], heap[i])) {
-          // left child is fine
-          if (rc < heap.size()) {
-            // (left and) right children exist
-            if (min_comp(heap[rc], heap[i])) {
-              // right child is fine
-              break;
+        // bubble down if it's compared wrongly with either child
+        while (true) {
+          lc = lchild(i);
+          rc = rchild(i);
+          if (lc < heap.size()) {
+            // left child exists
+            if (min_comp(heap[lc], heap[i])) {
+              // left child is fine
+              if (rc < heap.size()) {
+                // (left and) right children exist
+                if (min_comp(heap[rc], heap[i])) {
+                  // right child is fine
+                  break;
+                } else {
+                  // right child is wrongly placed
+                  swap(heap[i], heap[rc]);
+                  i = rc;
+                }
+              } else {
+                break;
+              }
             } else {
-              // right child is wrongly placed
-              swap(heap[i], heap[rc]);
-              i = rc;
+              // left child is wrongly placed
+              swap(heap[i], heap[lc]);
+              i = lc;
             }
           } else {
             break;
           }
-        } else {
-          // left child is wrongly placed
-          swap(heap[i], heap[lc]);
-          i = lc;
         }
-      } else {
-        break;
-      }
-    }
 
-    return i;
-  };
+        return i;
+      };
 
   while (!dist_pq.empty()) {
     pop_heap(dist_pq.begin(), dist_pq.end(), min_comp);
@@ -175,10 +180,11 @@ void Graph::dijkstra() {
         dist[neighbor] = altdist;
 
         // handle parallel priority queue
-        auto pqit = find_if(dist_pq.begin(), dist_pq.end(),
-                            [&neighbor](std::pair<Graph::vertex_t, Graph::weight_t> p) {
-                              return p.first == neighbor;
-                            });
+        auto pqit =
+            find_if(dist_pq.begin(), dist_pq.end(),
+                    [&neighbor](std::pair<Graph::vertex_t, Graph::weight_t> p) {
+                      return p.first == neighbor;
+                    });
 
         if (pqit != dist_pq.end()) {
           pqit->second = altdist;
