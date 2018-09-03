@@ -1,0 +1,50 @@
+version: 2.0
+jobs:
+  build:
+    working_directory: /home/cbgeo/research/sp
+    docker:
+      - image: quay.io/cbgeo/mpm
+    steps:
+      - checkout
+      # GCC-8
+      - run:
+          name: GCC-8 build
+          command: |
+            mkdir -p build
+            [ "$(ls -A build)" ] && rm -rf build/*
+            cd build
+            cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXPORT_COMPILE_COMMANDS=On ..
+            make -j4
+      # Clang-6.0
+      - run:
+          name: Clang-6.0 build
+          command: |
+            mkdir -p build
+            [ "$(ls -A build)" ] && rm -rf build/*
+            cd build
+            cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_EXPORT_COMPILE_COMMANDS=On ..
+            make -j4 
+            ctest -VV
+      # cppcheck
+      - run:
+          name: cppcheck
+          command: |
+            cppcheck --version
+            cppcheck --enable=warning --inconclusive --force --language=c++ --std=c++11 src/*.cc include/*.h include/*.tcc --error-exitcode=1
+      # clang-format
+      - run:
+          name: clang-format
+          command: |
+            python ./clang-tools/run-clang-format.py -r include/* src/* tests/*
+      # codecoverage
+      - run:
+          name: codecov.io
+          command: |
+            mkdir -p build
+            [ "$(ls -A build)" ] && rm -rf build/*
+            cd build
+            cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXPORT_COMPILE_COMMANDS=On -DENABLE_COVERAGE=On ..
+            make -j4
+            make gcov
+            make lcov
+            bash <(curl -s https://codecov.io/bash) -X gcov

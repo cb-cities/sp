@@ -229,4 +229,4 @@ class Graph {
       vertex_edges_;
 };
 
-#endif // _GRAPH_H_
+#endif  // _GRAPH_H_
