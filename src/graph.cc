@@ -1,32 +1,30 @@
 #include "graph.h"
 
-//! Make edge
-std::shared_ptr<Graph::Edge> Graph::make_edge(Graph::vertex_t vertex1,
-                                              Graph::vertex_t vertex2,
-                                              Graph::weight_t weight) {
-  // if (vertex1 > vertex2) std::swap(vertex1, vertex2);
-  return std::make_shared<Graph::Edge>(
-      std::make_pair(std::make_pair(vertex1, vertex2), weight));
-}
-
 //! Add edge
 inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
-                            Graph::weight_t weight) {
-  auto edge = this->make_edge(vertex1, vertex2, weight);
+                            Graph::weight_t weight, bool directed) {
+
+  if (!directed)
+    if (vertex1 > vertex2) std::swap(vertex1, vertex2);
+
+  // Create an edge
+  auto edge = std::make_shared<Graph::Edge>(
+      std::make_pair(std::make_pair(vertex1, vertex2), weight));
   edges_.emplace_back(edge);
+
   // Vertex 1
   auto vertex1_edges = vertex_edges_[vertex1];
   vertex1_edges.emplace_back(edge);
   vertex_edges_[vertex1] =
       std::vector<std::shared_ptr<Graph::Edge>>(vertex1_edges);
 
-  /*
-  // Vertex 2
-  auto vertex2_edges = vertex_edges_[vertex2];
-  vertex2_edges.emplace_back(edge);
-  vertex_edges_[vertex2] =
-      std::vector<std::shared_ptr<Graph::Edge>>(vertex2_edges);
-  */
+  if (!directed) {
+    // Vertex 2
+    auto vertex2_edges = vertex_edges_[vertex2];
+    vertex2_edges.emplace_back(edge);
+    vertex_edges_[vertex2] =
+        std::vector<std::shared_ptr<Graph::Edge>>(vertex2_edges);
+  }
 }
 
 void Graph::remove_edge(const std::shared_ptr<Graph::Edge>& edge) {
@@ -40,7 +38,8 @@ void Graph::remove_edge(const std::shared_ptr<Graph::Edge>& edge) {
 }
 
 //! Read MatrixMarket graph file format
-void Graph::read_graph_matrix_market(const std::string& filename) {
+void Graph::read_graph_matrix_market(const std::string& filename,
+                                     bool directed) {
   std::fstream file;
   file.open(filename.c_str(), std::ios::in);
   try {
@@ -64,7 +63,7 @@ void Graph::read_graph_matrix_market(const std::string& filename) {
           while (istream.good()) {
             // Read vertices edges and weights
             istream >> v1 >> v2 >> weight;
-            this->add_edge(v1, v2, weight);
+            this->add_edge(v1, v2, weight, directed);
           }
         }
       }
@@ -74,18 +73,18 @@ void Graph::read_graph_matrix_market(const std::string& filename) {
   }
 }
 
-void Graph::generate_simple_graph() {
+void Graph::generate_simple_graph(bool directed) {
   // set up a simple graph
-  this->add_edge(1, 2, 7.5);
-  this->add_edge(1, 3, 9.1);
-  this->add_edge(1, 6, 14.3);
-  this->add_edge(2, 1, 0.9);
-  this->add_edge(2, 3, 10.9);
-  this->add_edge(2, 4, 15.5);
-  this->add_edge(3, 4, 11.6);
-  this->add_edge(3, 6, 2.4);
-  this->add_edge(4, 5, 6.2);
-  this->add_edge(5, 6, 9.7);
+  this->add_edge(1, 2, 7.5, directed);
+  this->add_edge(1, 3, 9.1, directed);
+  this->add_edge(1, 6, 14.3, directed);
+  this->add_edge(2, 1, 0.9, directed);
+  this->add_edge(2, 3, 10.9, directed);
+  this->add_edge(2, 4, 15.5, directed);
+  this->add_edge(3, 4, 11.6, directed);
+  this->add_edge(3, 6, 2.4, directed);
+  this->add_edge(4, 5, 6.2, directed);
+  this->add_edge(5, 6, 9.7, directed);
 }
 
 // Compute shortest path using binary heap queue dijkstra
