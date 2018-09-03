@@ -1,3 +1,6 @@
+#ifndef _GRAPH_H_
+#define _GRAPH_H_
+
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -90,7 +93,7 @@ class Graph {
     this->add_edge(this->make_edge(4, 5, 6.2));
     this->add_edge(this->make_edge(5, 6, 9.7));
   }
-  
+
   void dijkstra() {
     // source vertex
     const vertex_t source = 1;
@@ -222,17 +225,8 @@ class Graph {
   // dijkstra's algorithm with a heap priority queue
   // adjacency list with iteration over each edge
   std::vector<std::shared_ptr<Edge>> edges_;
-  std::unordered_map<vertex_t, std::vector<std::shared_ptr<Edge>>> vertex_edges_;
+  std::unordered_map<vertex_t, std::vector<std::shared_ptr<Edge>>>
+      vertex_edges_;
 };
 
-int main(int argc, char** argv) {
-  auto graph = std::make_shared<Graph>();
-  if (argc > 1) {
-    // Read MatrixMarket file
-    std::string filename = argv[1];
-    graph->read_graph_matrix_market(filename);
-  } else
-    graph->generate_simple_graph();
-
-  graph->dijkstra();
-}
+#endif // _GRAPH_H_

@@ -1,5 +1,9 @@
+# Temporary files
 *~*
 *#*
+
+# Build directories
+build/*
 
 # Outputfiles
 bin/
