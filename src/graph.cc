@@ -24,40 +24,27 @@ void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
 
   */
   // Vertex 1
-  if (vertex_edges_.find(vertex1) == vertex_edges_.end()) {
-    std::vector<std::shared_ptr<Graph::Edge>> vertex_edges;
-    vertex_edges.emplace_back(edge);
-    vertex_edges_.emplace(
-        std::make_pair(Graph::vertex_t(vertex1), vertex_edges));
-  } else {
-    auto vertex1_edges = vertex_edges_.at(vertex1);
-    vertex1_edges.emplace_back(edge);
-    vertex_edges_[vertex1] =
-        std::vector<std::shared_ptr<Graph::Edge>>(vertex1_edges);
-  }
+  auto vertex1_edges = vertex_edges_[vertex1];
+  vertex1_edges.emplace_back(edge);
+  vertex_edges_[vertex1] =
+      std::vector<std::shared_ptr<Graph::Edge>>(vertex1_edges);
 
   // Vertex 2
-  if (vertex_edges_.find(vertex2) == vertex_edges_.end()) {
-    std::vector<std::shared_ptr<Graph::Edge>> vertex_edges;
-    vertex_edges.emplace_back(edge);
-    vertex_edges_.emplace(
-        std::make_pair(Graph::vertex_t(vertex2), vertex_edges));
-  } else {
-    auto vertex2_edges = vertex_edges_.at(vertex2);
-    vertex2_edges.emplace_back(edge);
-    vertex_edges_[vertex2] =
-        std::vector<std::shared_ptr<Graph::Edge>>(vertex2_edges);
-  }
+  auto vertex2_edges = vertex_edges_[vertex2];
+  vertex2_edges.emplace_back(edge);
+  vertex_edges_[vertex2] =
+      std::vector<std::shared_ptr<Graph::Edge>>(vertex2_edges);
+
 }
 
 void Graph::remove_edge(const std::shared_ptr<Graph::Edge>& edge) {
   edges_.erase(remove(edges_.begin(), edges_.end(), edge), edges_.end());
-  std::vector<std::shared_ptr<Graph::Edge>>& v1edge =
-      vertex_edges_[edge->first.first];
-  std::vector<std::shared_ptr<Graph::Edge>>& v2edge =
-      vertex_edges_[edge->first.second];
+  auto v1edge = vertex_edges_[edge->first.first];
+  auto v2edge = vertex_edges_[edge->first.second];
   v1edge.erase(remove(v1edge.begin(), v1edge.end(), edge), v1edge.end());
   v2edge.erase(remove(v2edge.begin(), v2edge.end(), edge), v2edge.end());
+  vertex_edges_[edge->first.first] = v1edge;
+  vertex_edges_[edge->first.second] = v2edge;
 }
 
 //! Read MatrixMarket graph file format
