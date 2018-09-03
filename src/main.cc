@@ -6,7 +6,7 @@ int main(int argc, char** argv) {
   auto graph = std::make_shared<Graph>();
   if (argc > 1) {
     // Read MatrixMarket file
-    std::string filename = argv[1];
+    const std::string filename = argv[1];
     graph->read_graph_matrix_market(filename);
   } else {
     // Generate a simple graph

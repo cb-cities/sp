@@ -10,8 +10,8 @@ std::shared_ptr<Graph::Edge> Graph::make_edge(Graph::vertex_t vertex1,
 }
 
 //! Add edge
-void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
-                     Graph::weight_t weight) {
+inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
+                            Graph::weight_t weight) {
   auto edge = this->make_edge(vertex1, vertex2, weight);
   edges_.emplace_back(edge);
   /*
@@ -174,7 +174,7 @@ void Graph::dijkstra() {
       };
 
   while (!dist_pq.empty()) {
-    pop_heap(dist_pq.begin(), dist_pq.end(), min_comp);
+    std::pop_heap(dist_pq.begin(), dist_pq.end(), min_comp);
     // u is current vertex
     Graph::vertex_t u = dist_pq.back().first;
     Graph::weight_t udist = dist_pq.back().second;
@@ -198,7 +198,7 @@ void Graph::dijkstra() {
         // handle parallel priority queue
         auto pqit =
             find_if(dist_pq.begin(), dist_pq.end(),
-                    [&neighbor](std::pair<Graph::vertex_t, Graph::weight_t> p) {
+                    [neighbor](std::pair<Graph::vertex_t, Graph::weight_t> p) {
                       return p.first == neighbor;
                     });
 
@@ -209,7 +209,7 @@ void Graph::dijkstra() {
 
         } else {
           dist_pq.push_back({neighbor, altdist});
-          push_heap(dist_pq.begin(), dist_pq.end(), min_comp);
+          std::push_heap(dist_pq.begin(), dist_pq.end(), min_comp);
         }
       }
     }
