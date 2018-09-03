@@ -4,7 +4,7 @@
 std::shared_ptr<Graph::Edge> Graph::make_edge(Graph::vertex_t vertex1,
                                               Graph::vertex_t vertex2,
                                               Graph::weight_t weight) {
-  if (vertex1 > vertex2) std::swap(vertex1, vertex2);
+  // if (vertex1 > vertex2) std::swap(vertex1, vertex2);
   return std::make_shared<Graph::Edge>(
       std::make_pair(std::make_pair(vertex1, vertex2), weight));
 }
@@ -20,11 +20,13 @@ inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   vertex_edges_[vertex1] =
       std::vector<std::shared_ptr<Graph::Edge>>(vertex1_edges);
 
+  /*
   // Vertex 2
   auto vertex2_edges = vertex_edges_[vertex2];
   vertex2_edges.emplace_back(edge);
   vertex_edges_[vertex2] =
       std::vector<std::shared_ptr<Graph::Edge>>(vertex2_edges);
+  */
 }
 
 void Graph::remove_edge(const std::shared_ptr<Graph::Edge>& edge) {
@@ -77,6 +79,7 @@ void Graph::generate_simple_graph() {
   this->add_edge(1, 2, 7.5);
   this->add_edge(1, 3, 9.1);
   this->add_edge(1, 6, 14.3);
+  this->add_edge(2, 1, 0.9);
   this->add_edge(2, 3, 10.9);
   this->add_edge(2, 4, 15.5);
   this->add_edge(3, 4, 11.6);
@@ -85,7 +88,9 @@ void Graph::generate_simple_graph() {
   this->add_edge(5, 6, 9.7);
 }
 
-void Graph::dijkstra(Graph::vertex_t source, Graph::vertex_t dest) {
+// Compute shortest path using binary heap queue dijkstra
+std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
+    Graph::vertex_t source, Graph::vertex_t dest) {
   std::unordered_map<Graph::vertex_t, Graph::vertex_t> prev;
   // parallel map and priority queue
   // {vertex, distance}
@@ -199,12 +204,5 @@ void Graph::dijkstra(Graph::vertex_t source, Graph::vertex_t dest) {
       }
     }
   }
-  // for each node n:
-  // if algorithm doesn't stop after finding path to destination
-  //     dist[n] contains the distance to it
-  // prev[n] contains the node before it
-  // building a path requires calling prev[n] iteratively
-  // and pushing the result onto a stack
-  for (const std::pair<Graph::vertex_t, Graph::weight_t>& p : dist)
-    std::cout << p.first << " dist " << p.second << std::endl;
+  return dist;
 }

@@ -29,8 +29,9 @@ class Graph {
   void read_graph_matrix_market(const std::string& filename);
   //! Generate a simple graph
   void generate_simple_graph();
-  //! Run shortest path
-  void dijkstra(vertex_t source, vertex_t dest);
+  //! Compute the shortest path using binary heap queue dijkstra
+  std::unordered_map<vertex_t, weight_t> dijkstra(vertex_t source,
+                                                  vertex_t dest);
 
  private:
   // dijkstra's algorithm with a heap priority queue

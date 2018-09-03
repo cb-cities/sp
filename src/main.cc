@@ -1,6 +1,6 @@
-#include <memory>
-
 #include "graph.h"
+#include "omp.h"
+#include <memory>
 
 int main(int argc, char** argv) {
   auto graph = std::make_shared<Graph>();
@@ -12,5 +12,7 @@ int main(int argc, char** argv) {
     // Generate a simple graph
     graph->generate_simple_graph();
   }
-  graph->dijkstra(1, -1);
+  const auto dist = graph->dijkstra(1, -1);
+  for (const std::pair<Graph::vertex_t, Graph::weight_t>& p : dist)
+    std::cout << p.first << " dist " << p.second << std::endl;
 }
