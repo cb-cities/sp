@@ -21,7 +21,7 @@ class Graph {
   std::shared_ptr<Edge> make_edge(vertex_t vertex1, vertex_t vertex2,
                                   weight_t weight);
   //! Add edge
-  void add_edge(const std::shared_ptr<Edge>& edge);
+  void add_edge(vertex_t vertex1, vertex_t vertex2, weight_t weight);
 
   void remove_edge(const std::shared_ptr<Edge>& edge);
 

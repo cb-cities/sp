@@ -10,14 +10,44 @@ std::shared_ptr<Graph::Edge> Graph::make_edge(Graph::vertex_t vertex1,
 }
 
 //! Add edge
-void Graph::add_edge(const std::shared_ptr<Graph::Edge>& edge) {
+void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
+                     Graph::weight_t weight) {
+  auto edge = this->make_edge(vertex1, vertex2, weight);
   edges_.emplace_back(edge);
+  /*
   std::vector<std::shared_ptr<Graph::Edge>>& v1edge =
       vertex_edges_[edge->first.first];
   std::vector<std::shared_ptr<Graph::Edge>>& v2edge =
       vertex_edges_[edge->first.second];
   v1edge.emplace_back(edge);
   v2edge.emplace_back(edge);
+
+  */
+  // Vertex 1
+  if (vertex_edges_.find(vertex1) == vertex_edges_.end()) {
+    std::vector<std::shared_ptr<Graph::Edge>> vertex_edges;
+    vertex_edges.emplace_back(edge);
+    vertex_edges_.emplace(
+        std::make_pair(Graph::vertex_t(vertex1), vertex_edges));
+  } else {
+    auto vertex1_edges = vertex_edges_.at(vertex1);
+    vertex1_edges.emplace_back(edge);
+    vertex_edges_[vertex1] =
+        std::vector<std::shared_ptr<Graph::Edge>>(vertex1_edges);
+  }
+
+  // Vertex 2
+  if (vertex_edges_.find(vertex2) == vertex_edges_.end()) {
+    std::vector<std::shared_ptr<Graph::Edge>> vertex_edges;
+    vertex_edges.emplace_back(edge);
+    vertex_edges_.emplace(
+        std::make_pair(Graph::vertex_t(vertex2), vertex_edges));
+  } else {
+    auto vertex2_edges = vertex_edges_.at(vertex2);
+    vertex2_edges.emplace_back(edge);
+    vertex_edges_[vertex2] =
+        std::vector<std::shared_ptr<Graph::Edge>>(vertex2_edges);
+  }
 }
 
 void Graph::remove_edge(const std::shared_ptr<Graph::Edge>& edge) {
@@ -55,7 +85,7 @@ void Graph::read_graph_matrix_market(const std::string& filename) {
           while (istream.good()) {
             // Read vertices edges and weights
             istream >> v1 >> v2 >> weight;
-            this->add_edge(this->make_edge(v1, v2, weight));
+            this->add_edge(v1, v2, weight);
           }
         }
       }
@@ -67,15 +97,15 @@ void Graph::read_graph_matrix_market(const std::string& filename) {
 
 void Graph::generate_simple_graph() {
   // set up a simple graph
-  this->add_edge(this->make_edge(1, 2, 7.5));
-  this->add_edge(this->make_edge(1, 3, 9.1));
-  this->add_edge(this->make_edge(1, 6, 14.3));
-  this->add_edge(this->make_edge(2, 3, 10.9));
-  this->add_edge(this->make_edge(2, 4, 15.5));
-  this->add_edge(this->make_edge(3, 4, 11.6));
-  this->add_edge(this->make_edge(3, 6, 2.4));
-  this->add_edge(this->make_edge(4, 5, 6.2));
-  this->add_edge(this->make_edge(5, 6, 9.7));
+  this->add_edge(1, 2, 7.5);
+  this->add_edge(1, 3, 9.1);
+  this->add_edge(1, 6, 14.3);
+  this->add_edge(2, 3, 10.9);
+  this->add_edge(2, 4, 15.5);
+  this->add_edge(3, 4, 11.6);
+  this->add_edge(3, 6, 2.4);
+  this->add_edge(4, 5, 6.2);
+  this->add_edge(5, 6, 9.7);
 }
 
 void Graph::dijkstra() {
