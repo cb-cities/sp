@@ -34,7 +34,6 @@ void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   vertex2_edges.emplace_back(edge);
   vertex_edges_[vertex2] =
       std::vector<std::shared_ptr<Graph::Edge>>(vertex2_edges);
-
 }
 
 void Graph::remove_edge(const std::shared_ptr<Graph::Edge>& edge) {
