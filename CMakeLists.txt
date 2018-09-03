@@ -55,3 +55,11 @@ include_directories(BEFORE
 #)
 
 add_executable(sp ${sp_SOURCE_DIR}/src/main.cc)
+
+
+# Coverage
+find_package(codecov)
+if(ENABLE_COVERAGE)
+  #add_executable(mpmtest_coverage ${mpm_src} ${test_src})
+  add_coverage(sp)
+endif()
