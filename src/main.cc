@@ -1,5 +1,4 @@
 #include "graph.h"
-#include "omp.h"
 #include <memory>
 
 int main(int argc, char** argv) {
