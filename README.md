@@ -1,13 +1,13 @@
 # Dijkstra Binary Heap Queue
 > CB-Cities
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cb-geo/sp/develop/license.md)
-[![Developer docs](https://img.shields.io/badge/developer-docs-blue.svg)](http://cb-geo.github.io/sp)
-[![User docs](https://img.shields.io/badge/user-docs-blue.svg)](https://sp.cb-geo.com/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cb-cities/sp/develop/license.md)
+[![Developer docs](https://img.shields.io/badge/developer-docs-blue.svg)](http://cb-cities.github.io/sp)
+[![User docs](https://img.shields.io/badge/user-docs-blue.svg)](https://sp.cb-cities.com/)
 [![CircleCI](https://circleci.com/gh/cb-cities/sp.svg?style=svg)](https://circleci.com/gh/cb-cities/sp)
-[![codecov](https://codecov.io/gh/cb-geo/sp/branch/develop/graph/badge.svg)](https://codecov.io/gh/cb-geo/sp)
-[![](https://img.shields.io/github/issues-raw/cb-geo/sp.svg)](https://github.com/cb-geo/sp/issues)
-[![Project management](https://img.shields.io/badge/projects-view-ff69b4.svg)](https://github.com/cb-geo/sp/projects/)
+[![codecov](https://codecov.io/gh/cb-cities/sp/branch/develop/graph/badge.svg)](https://codecov.io/gh/cb-cities/sp)
+[![](https://img.shields.io/github/issues-raw/cb-cities/sp.svg)](https://github.com/cb-cities/sp/issues)
+[![Project management](https://img.shields.io/badge/projects-view-ff69b4.svg)](https://github.com/cb-cities/sp/projects/)
 
 
 ## Compile
