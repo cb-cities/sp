@@ -15,10 +15,10 @@ int main(int argc, char** argv) {
 
   /*
   const auto dist = graph->dijkstra(1, -1);
-  std::cout << "Dijkstra\n";
+  std::cout << "Dijkstra BinaryHeapQueue\n";
   for (const std::pair<Graph::vertex_t, Graph::weight_t>& p : dist)
     std::cout << p.first << " dist " << p.second << std::endl;
   */
-  std::cout << "SP PQ\n";
+  std::cout << "Dijkstra PriorityQueue\n";
   graph->dijkstra_shortest_path(1);
 }

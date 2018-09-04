@@ -260,8 +260,10 @@ void Graph::dijkstra_shortest_path(vertex_t source) {
     }
   }
 
+  /*
   // Print shortest distances stored in dist[]
   std::cout << "Vertex  distance from source\n";
   for (int i = 0; i < dist.size(); ++i)
     std::cout << i << "\t" << dist[i] << "\n";
+  */
 }
