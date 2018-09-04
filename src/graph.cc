@@ -57,13 +57,16 @@ void Graph::read_graph_matrix_market(const std::string& filename,
         std::istringstream istream(line);
         int v1, v2;
         double weight;
+        unsigned nvertices;
         // ignore comment lines (# or !) or blank lines
         if ((line.find('#') == std::string::npos) &&
             (line.find('%') == std::string::npos) && (line != "")) {
           if (header) {
             // Ignore header
+            istream >> nvertices;
             while (istream.good()) istream >> ignore;
             header = false;
+            this->assign_nvertices(nvertices + 1);
           }
           while (istream.good()) {
             // Read vertices edges and weights
@@ -80,6 +83,7 @@ void Graph::read_graph_matrix_market(const std::string& filename,
 }
 
 void Graph::generate_simple_graph(bool directed) {
+  this->assign_nvertices(7);
   // set up a simple graph
   this->add_edge(1, 2, 1.5, directed);
   this->add_edge(1, 3, 9.1, directed);
@@ -214,7 +218,7 @@ std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
 }
 
 // Prints shortest paths from src to all other vertices
-void Graph::shortestPath(vertex_t src) {
+void Graph::dijkstra_shortest_path(vertex_t src) {
   // Create a priority queue to store vertices that
   // are being preprocessed. This is weird syntax in C++.
   // Refer below link for details of this syntax
@@ -229,8 +233,8 @@ void Graph::shortestPath(vertex_t src) {
 
   // Insert source itself in priority queue and initialize
   // its distance as 0.
-  pq.push(std::make_pair(0, src));
-  dist[src] = 0;
+  pq.push(std::make_pair(0., src));
+  dist[src] = 0.;
 
   // Looping till priority queue becomes empty (or all
   // distances are not finalized)
@@ -261,9 +265,7 @@ void Graph::shortestPath(vertex_t src) {
   }
 
   // Print shortest distances stored in dist[]
-  /*
   std::cout << "Vertex  distance from source\n";
   for (int i = 0; i < dist.size(); ++i)
     std::cout << i << "\t" << dist[i] << "\n";
-  */
 }

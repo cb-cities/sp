@@ -21,7 +21,8 @@ class Graph {
   // {{v1, v2}, weight}
   using Edge = std::pair<std::pair<vertex_t, vertex_t>, weight_t>;
 
-  Graph(int size) {
+  // Assign number of vertices
+  void assign_nvertices(unsigned size) {
     this->nvertices_ = size;
     adj = new std::list<gpair>[size];
   }
@@ -44,7 +45,8 @@ class Graph {
   std::unordered_map<vertex_t, weight_t> dijkstra(vertex_t source,
                                                   vertex_t dest);
 
-  void shortestPath(vertex_t src);
+  //! Compute the shortest path using priority queue
+  void dijkstra_shortest_path(vertex_t src);
 
  private:
   unsigned nvertices_;
