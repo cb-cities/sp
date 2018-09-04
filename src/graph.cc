@@ -18,17 +18,12 @@ inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   vertex_edges_[vertex1] =
       std::vector<std::shared_ptr<Graph::Edge>>(vertex1_edges);
 
-  //
-  adj[vertex1].push_back(std::make_pair(vertex2, weight));
-
   if (!directed) {
     // Vertex 2
     auto vertex2_edges = vertex_edges_[vertex2];
     vertex2_edges.emplace_back(edge);
     vertex_edges_[vertex2] =
         std::vector<std::shared_ptr<Graph::Edge>>(vertex2_edges);
-    //
-    adj[vertex2].push_back(std::make_pair(vertex1, weight));
   }
 }
 
@@ -227,6 +222,14 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t dest) {
   // Create a vector for distances and initialize all to max
   std::vector<weight_t> dist(nvertices_, std::numeric_limits<weight_t>::max());
 
+  // sptSet[i] will true if vertex i is included / in shortest
+  // path tree or shortest distance from src to i is finalized
+  std::vector<bool> shortest_path_tree(nvertices_, false);
+
+  // Parent array to store shortest path tree
+  std::unordered_map<vertex_t, vertex_t> parent;
+  parent[source] = -1;
+
   // Insert source itself in priority queue and initialize
   // its distance as 0.
   pq.push(std::make_pair(0., source));
@@ -235,27 +238,29 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t dest) {
   // Looping till priority queue becomes empty (or all
   // distances are not finalized)
   while (!pq.empty()) {
-    // The first vertex in pair is the minimum distance
-    // vertex, extract it from priority queue.
-    // vertex label is stored in second of pair (it
-    // has to be done this way to keep the vertices
-    // sorted distance (distance must be first item
-    // in pair)
+    // The first vertex in pair is the minimum distance vertex, extract it from
+    // priority queue. vertex label is stored in second of pair (it has to be
+    // done this way to keep the vertices sorted distance (distance must be
+    // first item in pair)
     vertex_t u = pq.top().second;
     pq.pop();
+
+    // Set the current vertex as processed
+    shortest_path_tree.at(u) = true;
 
     // Break if destination is reached
     if (u == dest) break;
 
     // Get all adjacent vertices of a vertex
-    for (auto itr = vertex_edges_[u].begin(); itr != vertex_edges_[u].end();
-         ++itr) {
-      // Get vertex label and weight of current adjacent of u.
-      vertex_t neighbour = (*itr)->first.second;
-      weight_t weight = (*itr)->second;
+    for (const auto& edge : vertex_edges_.at(u)) {
+      // Get vertex label and weight of neighbours of u.
+      vertex_t neighbour = edge->first.second;
+      weight_t weight = edge->second;
 
       // If there is shorted path to neighbour vertex through u.
       if (dist[neighbour] > dist[u] + weight) {
+        if (!shortest_path_tree[neighbour]) parent[neighbour] = u;
+
         // Updating distance of vertex
         dist[neighbour] = dist[u] + weight;
         pq.push(std::make_pair(dist[neighbour], neighbour));
@@ -267,4 +272,6 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t dest) {
   std::cout << "Vertex  distance from source\n";
   for (int i = 0; i < dist.size(); ++i)
     std::cout << i << "\t" << dist[i] << "\n";
+  // print the path
+  // print_solution(dest, dist, parent);
 }
