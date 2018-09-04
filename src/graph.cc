@@ -248,10 +248,12 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t dest) {
     if (u == dest) break;
 
     // Get all adjacent vertices of a vertex
-    for (auto itr = adj[u].begin(); itr != adj[u].end(); ++itr) {
+    for (auto itr = vertex_edges_[u].begin(); itr != vertex_edges_[u].end();
+         ++itr) {
+      //    for (auto itr = adj[u].begin(); itr != adj[u].end(); ++itr) {
       // Get vertex label and weight of current adjacent of u.
-      vertex_t neighbour = (*itr).first;
-      weight_t weight = (*itr).second;
+      vertex_t neighbour = (*itr)->first.second;
+      weight_t weight = (*itr)->second;
 
       // If there is shorted path to neighbour vertex through u.
       if (dist[neighbour] > dist[u] + weight) {
