@@ -13,12 +13,12 @@ int main(int argc, char** argv) {
     // Generate a simple graph
     graph->generate_simple_graph(directed);
   }
-  /*
+
   const auto dist = graph->dijkstra(1, -1);
   std::cout << "Dijkstra BinaryHeapQueue\n";
   for (const std::pair<Graph::vertex_t, Graph::weight_t>& p : dist)
     std::cout << p.first << " dist " << p.second << std::endl;
-  */
+
   std::cout << "Dijkstra PriorityQueue\n";
-  graph->dijkstra_priority_queue(1, -1);
+  graph->dijkstra_priority_queue(1, 3);
 }

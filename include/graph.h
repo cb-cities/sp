@@ -45,30 +45,28 @@ class Graph {
   //! Compute the shortest path using priority queue
   void dijkstra_priority_queue(vertex_t src, vertex_t dest);
 
-  // Function to print shortest
-  // path from source to j
-  // using parent array
-  void print_path(const std::unordered_map<vertex_t, vertex_t>& parent, int j) {
-
-    std::cout << parent.at(j) << "\t";
-    // Base Case : If j is source
-    if (parent.at(j) == -1) return;
-    print_path(parent, parent.at(j));
+  // Get path from source to j using parent array
+  std::vector<vertex_t> get_path(
+      const std::unordered_map<vertex_t, vertex_t>& parent, vertex_t vertex) {
+    std::vector<vertex_t> path;
+    while (vertex != -1) {
+      vertex = parent.at(vertex);
+      if (vertex != -1) path.emplace_back(vertex);
+    }
+    return path;
   }
 
-  // A utility function to print
-  // the constructed distance
-  // array
-  void print_solution(vertex_t destination, const std::vector<weight_t>& dist,
-                      const std::unordered_map<vertex_t, vertex_t>& parent) {
+  // Print shortest path distances for destinations
+  void print_distances(vertex_t destination,
+                       const std::vector<weight_t>& distance,
+                       const std::unordered_map<vertex_t, vertex_t>& parent) {
     int src = 0;
-    std::cout << "Destination: " << destination
-              << "distance: " << dist[destination];
     if (destination != -1) {
+      std::cout << "Destination: " << destination
+                << " distance: " << distance[destination];
       std::cout << " path: ";
-      print_path(parent, destination);
-      std::cout << "\n";
-    } else {
+      auto path = get_path(parent, destination);
+      for (const auto& item : path) std::cout << item << "\t";
       std::cout << "\n";
     }
   }

@@ -266,6 +266,7 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t dest) {
       }
     }
   }
+  /*
   // Print shortest distances stored in dist[]
   std::cout << "Vertex  distance from source\n";
   unsigned i = 0;
@@ -273,6 +274,7 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t dest) {
     std::cout << i << "\t" << distance << "\n";
     ++i;
   }
+  */
   // print the path
-  // print_solution(dest, dist, parent);
+  print_distances(dest, distances, parent);
 }
