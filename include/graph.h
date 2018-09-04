@@ -46,7 +46,7 @@ class Graph {
                                                   vertex_t dest);
 
   //! Compute the shortest path using priority queue
-  void dijkstra_shortest_path(vertex_t src);
+  void dijkstra_priority_queue(vertex_t src, vertex_t dest);
 
  private:
   unsigned nvertices_;

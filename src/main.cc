@@ -20,5 +20,5 @@ int main(int argc, char** argv) {
     std::cout << p.first << " dist " << p.second << std::endl;
   */
   std::cout << "Dijkstra PriorityQueue\n";
-  graph->dijkstra_shortest_path(1);
+  graph->dijkstra_priority_queue(1, 3);
 }
