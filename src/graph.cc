@@ -80,7 +80,7 @@ void Graph::generate_simple_graph(bool directed) {
   this->add_edge(1, 3, 9.1, directed);
   this->add_edge(1, 6, 14.3, directed);
   this->add_edge(2, 1, 0.9, directed);
-  this->add_edge(2, 3, 10.9, directed);
+  this->add_edge(2, 3, 5.9, directed);
   this->add_edge(2, 4, 15.5, directed);
   this->add_edge(3, 4, 11.6, directed);
   this->add_edge(3, 6, 2.4, directed);
@@ -96,6 +96,7 @@ std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
   // {vertex, distance}
   std::unordered_map<Graph::vertex_t, Graph::weight_t> dist;
   std::vector<std::pair<Graph::vertex_t, Graph::weight_t>> dist_pq;
+  std::unordered_map<Graph::vertex_t, Graph::weight_t> shortest_path;
   dist[source] = 0;
   dist_pq.push_back({source, 0});
   // already a heap with size 1
@@ -125,7 +126,6 @@ std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
           if (pi == i || min_comp(heap[i], heap[pi])) {
             break;
           }
-
           swap(heap[i], heap[pi]);
           i = pi;
         }
@@ -173,23 +173,23 @@ std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
     // break if destination is found
     if (dest == u) break;
 
-    // neighbor edge e
+    // neighbour edge e
     for (const std::shared_ptr<Graph::Edge>& edge : vertex_edges_[u]) {
       // *std::shared_ptr<Graph::Edge> is {{v1, v2}, weight}
-      // neighbor
-      const Graph::vertex_t neighbor =
+      // neighbour
+      const Graph::vertex_t neighbour =
           edge->first.first == u ? edge->first.second : edge->first.first;
       Graph::weight_t altdist = udist + edge->second;
       // if not checked or better path
-      if (dist.find(neighbor) == dist.end() || altdist < dist[neighbor]) {
-        prev[neighbor] = u;
-        dist[neighbor] = altdist;
-
+      if (dist.find(neighbour) == dist.end() || altdist < dist[neighbour]) {
+        prev[neighbour] = u;
+        dist[neighbour] = altdist;
+        if (dest == neighbour && dest != -1) shortest_path[neighbour] = altdist;
         // handle parallel priority queue
         auto pqit =
             find_if(dist_pq.begin(), dist_pq.end(),
-                    [neighbor](std::pair<Graph::vertex_t, Graph::weight_t> p) {
-                      return p.first == neighbor;
+                    [neighbour](std::pair<Graph::vertex_t, Graph::weight_t> p) {
+                      return p.first == neighbour;
                     });
 
         if (pqit != dist_pq.end()) {
@@ -198,11 +198,11 @@ std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
           bubble(dist_pq, pqit - dist_pq.begin());
 
         } else {
-          dist_pq.push_back({neighbor, altdist});
+          dist_pq.push_back({neighbour, altdist});
           std::push_heap(dist_pq.begin(), dist_pq.end(), min_comp);
         }
       }
     }
   }
-  return dist;
+  return (dest != -1 ? shortest_path : dist);
 }

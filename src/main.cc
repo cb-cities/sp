@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
     // Generate a simple graph
     graph->generate_simple_graph(directed);
   }
-  const auto dist = graph->dijkstra(1, -1);
+  const auto dist = graph->dijkstra(1, 3);
   for (const std::pair<Graph::vertex_t, Graph::weight_t>& p : dist)
     std::cout << p.first << " dist " << p.second << std::endl;
 }
