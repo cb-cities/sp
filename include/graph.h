@@ -48,6 +48,30 @@ class Graph {
   //! Compute the shortest path using priority queue
   void dijkstra_priority_queue(vertex_t src, vertex_t dest);
 
+  // Function to print shortest
+  // path from source to j
+  // using parent array
+  void printPath(const std::unordered_map<vertex_t, vertex_t>& parent, int j) {
+
+    // Base Case : If j is source
+    if (parent.at(j) == -1) return;
+
+    printPath(parent, parent.at(j));
+
+    printf("%d ", j);
+  }
+
+  // A utility function to print
+  // the constructed distance
+  // array
+  void printSolution(const std::vector<weight_t>& dist,
+                     const std::unordered_map<vertex_t, vertex_t>& parent) {
+    int src = 0;
+    printf("Vertex\t Distance\tPath");
+    // printf("\n%d -> %d \t\t %d\t\t%d ", src, i, dist[i], src);
+    printPath(parent, 3);
+  }
+
  private:
   unsigned nvertices_;
   // Edges and weights
