@@ -1,5 +1,6 @@
-#include "graph.h"
 #include <memory>
+
+#include "graph.h"
 
 int main(int argc, char** argv) {
   auto graph = std::make_shared<Graph>();
