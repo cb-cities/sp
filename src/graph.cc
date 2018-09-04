@@ -252,7 +252,7 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t dest) {
     if (u == dest) break;
 
     // Get all adjacent vertices of a vertex
-    for (const auto& edge : vertex_edges_.at(u)) {
+    for (const auto& edge : vertex_edges_[u]) {
       // Get vertex label and weight of neighbours of u.
       vertex_t neighbour = edge->first.second;
       weight_t weight = edge->second;
