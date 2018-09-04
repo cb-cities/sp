@@ -284,3 +284,19 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t destination) {
     std::cout << destination << "\n";
   }
 }
+
+// Get path from source to j using parent array
+std::vector<Graph::vertex_t> Graph::get_path(
+    const std::unordered_map<Graph::vertex_t, Graph::vertex_t>& parent,
+    Graph::vertex_t destination) {
+  // Create an empty path
+  std::vector<Graph::vertex_t> path;
+  // Iterate until source has been reached
+  while (destination != -1) {
+    destination = parent.at(destination);
+    if (destination != -1) path.emplace_back(destination);
+  }
+  // Reverse to arrange from source to destination
+  std::reverse(path.begin(), path.end());
+  return path;
+}

@@ -47,17 +47,8 @@ class Graph {
 
   // Get path from source to j using parent array
   std::vector<vertex_t> get_path(
-      const std::unordered_map<vertex_t, vertex_t>& parent, vertex_t vertex) {
-    std::vector<vertex_t> path;
-    const vertex_t destination = vertex;
-    while (vertex != -1) {
-      vertex = parent.at(vertex);
-      if (vertex != -1) path.emplace_back(vertex);
-    }
-    // Reverse to arrange from source to destination
-    std::reverse(path.begin(), path.end());
-    return path;
-  }
+      const std::unordered_map<vertex_t, vertex_t>& parent,
+      vertex_t destination);
 
  private:
   unsigned nvertices_;
