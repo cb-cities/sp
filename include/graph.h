@@ -6,11 +6,14 @@
 #include <iostream>
 #include <limits>
 #include <list>
+#include <map>
 #include <memory>
 #include <queue>
 #include <sstream>
-#include <unordered_map>
+#include <tuple>
 #include <vector>
+
+#include "unordered_map_tuple_hash.h"
 
 class Graph {
  public:
@@ -52,9 +55,9 @@ class Graph {
 
  private:
   unsigned nvertices_;
-  // Edges and weights
-  std::vector<std::shared_ptr<Edge>> edges_;
-  // dijkstra's algorithm with a heap priority queue
+  // Edges
+  std::unordered_map<std::tuple<vertex_t, vertex_t>, std::shared_ptr<Edge>>
+      edges_;
   // adjacency list with iteration over each edge
   std::unordered_map<vertex_t, std::vector<std::shared_ptr<Edge>>>
       vertex_edges_;

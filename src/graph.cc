@@ -10,7 +10,7 @@ inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   // Create an edge
   auto edge = std::make_shared<Graph::Edge>(
       std::make_pair(std::make_pair(vertex1, vertex2), weight));
-  edges_.emplace_back(edge);
+  edges_[std::make_tuple(vertex1, vertex2)] = edge;
 
   // Vertex 1
   auto vertex1_edges = vertex_edges_[vertex1];
@@ -28,7 +28,7 @@ inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
 }
 
 void Graph::remove_edge(const std::shared_ptr<Graph::Edge>& edge) {
-  edges_.erase(remove(edges_.begin(), edges_.end(), edge), edges_.end());
+  edges_.erase(std::make_tuple(edge->first.first, edge->first.second));
   auto v1edge = vertex_edges_[edge->first.first];
   auto v2edge = vertex_edges_[edge->first.second];
   v1edge.erase(remove(v1edge.begin(), v1edge.end(), edge), v1edge.end());
