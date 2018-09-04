@@ -2,7 +2,7 @@
 #include <memory>
 
 int main(int argc, char** argv) {
-  auto graph = std::make_shared<Graph>();
+  auto graph = std::make_shared<Graph>(83336);
   const bool directed = true;
   if (argc > 1) {
     // Read MatrixMarket file
@@ -12,7 +12,13 @@ int main(int argc, char** argv) {
     // Generate a simple graph
     graph->generate_simple_graph(directed);
   }
-  const auto dist = graph->dijkstra(1, 3);
+
+  /*
+  const auto dist = graph->dijkstra(1, -1);
+  std::cout << "Dijkstra\n";
   for (const std::pair<Graph::vertex_t, Graph::weight_t>& p : dist)
     std::cout << p.first << " dist " << p.second << std::endl;
+  */
+  std::cout << "SP PQ\n";
+  graph->shortestPath(1);
 }

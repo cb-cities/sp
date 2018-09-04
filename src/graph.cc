@@ -18,12 +18,17 @@ inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   vertex_edges_[vertex1] =
       std::vector<std::shared_ptr<Graph::Edge>>(vertex1_edges);
 
+  //
+  adj[vertex1].push_back(std::make_pair(vertex2, weight));
+
   if (!directed) {
     // Vertex 2
     auto vertex2_edges = vertex_edges_[vertex2];
     vertex2_edges.emplace_back(edge);
     vertex_edges_[vertex2] =
         std::vector<std::shared_ptr<Graph::Edge>>(vertex2_edges);
+    //
+    adj[vertex2].push_back(std::make_pair(vertex1, weight));
   }
 }
 
@@ -76,14 +81,15 @@ void Graph::read_graph_matrix_market(const std::string& filename,
 
 void Graph::generate_simple_graph(bool directed) {
   // set up a simple graph
-  this->add_edge(1, 2, 7.5, directed);
+  this->add_edge(1, 2, 1.5, directed);
   this->add_edge(1, 3, 9.1, directed);
   this->add_edge(1, 6, 14.3, directed);
   this->add_edge(2, 1, 0.9, directed);
-  this->add_edge(2, 3, 5.9, directed);
-  this->add_edge(2, 4, 15.5, directed);
+  this->add_edge(2, 3, 15.9, directed);
+  this->add_edge(2, 4, 5.5, directed);
   this->add_edge(3, 4, 11.6, directed);
   this->add_edge(3, 6, 2.4, directed);
+  this->add_edge(4, 3, 0.2, directed);
   this->add_edge(4, 5, 6.2, directed);
   this->add_edge(5, 6, 9.7, directed);
 }
@@ -205,4 +211,59 @@ std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
     }
   }
   return (dest != -1 ? shortest_path : dist);
+}
+
+// Prints shortest paths from src to all other vertices
+void Graph::shortestPath(vertex_t src) {
+  // Create a priority queue to store vertices that
+  // are being preprocessed. This is weird syntax in C++.
+  // Refer below link for details of this syntax
+  // https://www.geeksforgeeks.org/implement-min-heap-using-stl/
+  std::priority_queue<Graph::gpair, std::vector<Graph::gpair>,
+                      std::greater<Graph::gpair>>
+      pq;
+
+  // Create a vector for distances and initialize all
+  // distances as infinite (INF)
+  std::vector<weight_t> dist(nvertices_, std::numeric_limits<weight_t>::max());
+
+  // Insert source itself in priority queue and initialize
+  // its distance as 0.
+  pq.push(std::make_pair(0, src));
+  dist[src] = 0;
+
+  // Looping till priority queue becomes empty (or all
+  // distances are not finalized)
+  while (!pq.empty()) {
+    // The first vertex in pair is the minimum distance
+    // vertex, extract it from priority queue.
+    // vertex label is stored in second of pair (it
+    // has to be done this way to keep the vertices
+    // sorted distance (distance must be first item
+    // in pair)
+    vertex_t u = pq.top().second;
+    pq.pop();
+
+    // 'itr' is used to get all adjacent vertices of a vertex
+    for (auto itr = adj[u].begin(); itr != adj[u].end(); ++itr) {
+      // Get vertex label and weight of current adjacent
+      // of u.
+      vertex_t vertex = (*itr).first;
+      weight_t weight = (*itr).second;
+
+      //  If there is shorted path to vertex v through u.
+      if (dist[vertex] > dist[u] + weight) {
+        // Updating distance of vertex
+        dist[vertex] = dist[u] + weight;
+        pq.push(std::make_pair(dist[vertex], vertex));
+      }
+    }
+  }
+
+  // Print shortest distances stored in dist[]
+  /*
+  std::cout << "Vertex  distance from source\n";
+  for (int i = 0; i < dist.size(); ++i)
+    std::cout << i << "\t" << dist[i] << "\n";
+  */
 }
