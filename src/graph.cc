@@ -213,7 +213,7 @@ std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
 }
 
 // Dijktra shortest paths from src to all other vertices
-void Graph::dijkstra_priority_queue(vertex_t source, vertex_t dest) {
+void Graph::dijkstra_priority_queue(vertex_t source, vertex_t destination) {
   // Create a priority queue to store vertices
   std::priority_queue<Graph::gpair, std::vector<Graph::gpair>,
                       std::greater<Graph::gpair>>
@@ -248,7 +248,7 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t dest) {
     shortest_path_tree.at(u) = true;
 
     // Break if destination is reached
-    if (u == dest) break;
+    if (u == destination) break;
 
     // Get all adjacent vertices of a vertex
     for (const auto& edge : vertex_edges_[u]) {
@@ -276,5 +276,11 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t dest) {
   }
   */
   // print the path
-  print_distances(dest, distances, parent);
+  if (destination != -1) {
+    std::cout << "Source: " << source << " destination: " << destination
+              << " distance: " << distances[destination] << " path: ";
+    const auto&& path = get_path(parent, destination);
+    for (const auto& item : path) std::cout << item << "->";
+    std::cout << destination << "\n";
+  }
 }

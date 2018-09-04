@@ -49,26 +49,14 @@ class Graph {
   std::vector<vertex_t> get_path(
       const std::unordered_map<vertex_t, vertex_t>& parent, vertex_t vertex) {
     std::vector<vertex_t> path;
+    const vertex_t destination = vertex;
     while (vertex != -1) {
       vertex = parent.at(vertex);
       if (vertex != -1) path.emplace_back(vertex);
     }
+    // Reverse to arrange from source to destination
+    std::reverse(path.begin(), path.end());
     return path;
-  }
-
-  // Print shortest path distances for destinations
-  void print_distances(vertex_t destination,
-                       const std::vector<weight_t>& distance,
-                       const std::unordered_map<vertex_t, vertex_t>& parent) {
-    int src = 0;
-    if (destination != -1) {
-      std::cout << "Destination: " << destination
-                << " distance: " << distance[destination];
-      std::cout << " path: ";
-      auto path = get_path(parent, destination);
-      for (const auto& item : path) std::cout << item << "\t";
-      std::cout << "\n";
-    }
   }
 
  private:
