@@ -22,10 +22,7 @@ class Graph {
   using Edge = std::pair<std::pair<vertex_t, vertex_t>, weight_t>;
 
   // Assign number of vertices
-  void assign_nvertices(unsigned size) {
-    this->nvertices_ = size;
-    adj = new std::list<gpair>[size];
-  }
+  void assign_nvertices(unsigned size) { this->nvertices_ = size; }
 
   //! Add edge
   void add_edge(vertex_t vertex1, vertex_t vertex2, weight_t weight,
@@ -51,25 +48,29 @@ class Graph {
   // Function to print shortest
   // path from source to j
   // using parent array
-  void printPath(const std::unordered_map<vertex_t, vertex_t>& parent, int j) {
+  void print_path(const std::unordered_map<vertex_t, vertex_t>& parent, int j) {
 
+    std::cout << parent.at(j) << "\t";
     // Base Case : If j is source
     if (parent.at(j) == -1) return;
-
-    printPath(parent, parent.at(j));
-
-    printf("%d ", j);
+    print_path(parent, parent.at(j));
   }
 
   // A utility function to print
   // the constructed distance
   // array
-  void printSolution(const std::vector<weight_t>& dist,
-                     const std::unordered_map<vertex_t, vertex_t>& parent) {
+  void print_solution(vertex_t destination, const std::vector<weight_t>& dist,
+                      const std::unordered_map<vertex_t, vertex_t>& parent) {
     int src = 0;
-    printf("Vertex\t Distance\tPath");
-    // printf("\n%d -> %d \t\t %d\t\t%d ", src, i, dist[i], src);
-    printPath(parent, 3);
+    std::cout << "Destination: " << destination
+              << "distance: " << dist[destination];
+    if (destination != -1) {
+      std::cout << " path: ";
+      print_path(parent, destination);
+      std::cout << "\n";
+    } else {
+      std::cout << "\n";
+    }
   }
 
  private:
@@ -80,10 +81,6 @@ class Graph {
   // adjacency list with iteration over each edge
   std::unordered_map<vertex_t, std::vector<std::shared_ptr<Edge>>>
       vertex_edges_;
-
-  // In a weighted graph, we need to store vertex
-  // and weight pair for every edge
-  std::list<std::pair<vertex_t, weight_t>>* adj;
 };
 
 #endif  // _GRAPH_H_
