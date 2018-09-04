@@ -217,24 +217,21 @@ std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
   return (dest != -1 ? shortest_path : dist);
 }
 
-// Prints shortest paths from src to all other vertices
-void Graph::dijkstra_shortest_path(vertex_t src) {
+// Dijktra shortest paths from src to all other vertices
+void Graph::dijkstra_shortest_path(vertex_t source) {
   // Create a priority queue to store vertices that
-  // are being preprocessed. This is weird syntax in C++.
-  // Refer below link for details of this syntax
-  // https://www.geeksforgeeks.org/implement-min-heap-using-stl/
+  // are being preprocessed.
   std::priority_queue<Graph::gpair, std::vector<Graph::gpair>,
                       std::greater<Graph::gpair>>
       pq;
 
-  // Create a vector for distances and initialize all
-  // distances as infinite (INF)
+  // Create a vector for distances and initialize all to max
   std::vector<weight_t> dist(nvertices_, std::numeric_limits<weight_t>::max());
 
   // Insert source itself in priority queue and initialize
   // its distance as 0.
-  pq.push(std::make_pair(0., src));
-  dist[src] = 0.;
+  pq.push(std::make_pair(0., source));
+  dist[source] = 0.;
 
   // Looping till priority queue becomes empty (or all
   // distances are not finalized)
@@ -248,18 +245,17 @@ void Graph::dijkstra_shortest_path(vertex_t src) {
     vertex_t u = pq.top().second;
     pq.pop();
 
-    // 'itr' is used to get all adjacent vertices of a vertex
+    // Get all adjacent vertices of a vertex
     for (auto itr = adj[u].begin(); itr != adj[u].end(); ++itr) {
-      // Get vertex label and weight of current adjacent
-      // of u.
-      vertex_t vertex = (*itr).first;
+      // Get vertex label and weight of current adjacent of u.
+      vertex_t neighbour = (*itr).first;
       weight_t weight = (*itr).second;
 
-      //  If there is shorted path to vertex v through u.
-      if (dist[vertex] > dist[u] + weight) {
+      // If there is shorted path to neighbour vertex through u.
+      if (dist[neighbour] > dist[u] + weight) {
         // Updating distance of vertex
-        dist[vertex] = dist[u] + weight;
-        pq.push(std::make_pair(dist[vertex], vertex));
+        dist[neighbour] = dist[u] + weight;
+        pq.push(std::make_pair(dist[neighbour], neighbour));
       }
     }
   }
