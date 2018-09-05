@@ -116,9 +116,9 @@ void Graph::generate_simple_graph() {
 ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
                                             vertex_t destination) {
   // Create a priority queue to store weights and vertices
-  std::priority_queue<Graph::vertex_weight_t,
-                      std::vector<Graph::vertex_weight_t>,
-                      std::greater<Graph::vertex_weight_t>>
+  std::priority_queue<std::pair<Graph::weight_t, Graph::vertex_t>,
+                      std::vector<std::pair<Graph::weight_t, Graph::vertex_t>>,
+                      std::greater<std::pair<Graph::weight_t, Graph::vertex_t>>>
       priority_queue;
 
   // Create a shortest path object.

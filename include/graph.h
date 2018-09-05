@@ -56,7 +56,6 @@ class Graph {
   using vertex_t = int;
   //! Weight type, that can be added with +
   using weight_t = double;
-  using vertex_weight_t = std::pair<vertex_t, weight_t>;
   //! Edge {{v1, v2}, weight}
   using Edge = std::pair<std::pair<vertex_t, vertex_t>, weight_t>;
 
