@@ -29,6 +29,16 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
     // Check shortest path
     REQUIRE(distances.at(3) == Approx(7.2).epsilon(Tolerance));
 
+    // Check update edge
+    SECTION("Check update edge") {
+      // Update edge (1, 3) to weight 3.7
+      graph->update_edge(1, 3, 3.7);
+      // Run Dijkstra Priority Queue
+      distances = graph->dijkstra_priority_queue(source, destination);
+      // Check shortest path
+      REQUIRE(distances.at(3) == Approx(3.7).epsilon(Tolerance));
+    }
+
     // Check remove edge
     SECTION("Check remove edge") {
       // Remove edge (3, 1)

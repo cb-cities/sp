@@ -27,6 +27,15 @@ inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   }
 }
 
+// Update edge
+void Graph::update_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
+                        Graph::weight_t weight) {
+  // Get pointer to specified edge connecting vertex 1 and 2
+  auto edge = edges_.at(std::make_tuple(vertex1, vertex2));
+  // Update edge weight
+  edge->second = weight;
+}
+
 // Remove edge
 void Graph::remove_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2) {
   auto edge = edges_[std::make_tuple(vertex1, vertex2)];

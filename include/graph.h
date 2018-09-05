@@ -38,6 +38,12 @@ class Graph {
   //! \param[in] weight Weight of edge connecting vertex 1 and 2
   void add_edge(vertex_t vertex1, vertex_t vertex2, weight_t weight);
 
+  //! Update edge of a graph
+  //! \param[in] vertex1 ID of vertex1
+  //! \param[in] vertex2 ID of vertex2
+  //! \param[in] weight Weight of edge connecting vertex 1 and 2
+  void update_edge(vertex_t vertex1, vertex_t vertex2, weight_t weight);
+
   //! Remove edge from graph
   //! \param[in] vertex1 ID of vertex1
   //! \param[in] vertex2 ID of vertex2
