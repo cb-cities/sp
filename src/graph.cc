@@ -115,10 +115,11 @@ void Graph::generate_simple_graph() {
 // Dijktra shortest paths from src to all other vertices
 std::vector<Graph::weight_t> Graph::dijkstra_priority_queue(
     vertex_t source, vertex_t destination) {
-  // Create a priority queue to store vertices
-  std::priority_queue<Graph::gpair, std::vector<Graph::gpair>,
-                      std::greater<Graph::gpair>>
-      pq;
+  // Create a priority queue to store weights and vertices
+  std::priority_queue<Graph::vertex_weight_t,
+                      std::vector<Graph::vertex_weight_t>,
+                      std::greater<Graph::vertex_weight_t>>
+      priority_queue;
 
   // Create a vector for distances and initialize all to max
   std::vector<weight_t> distances(nvertices_,
@@ -133,17 +134,15 @@ std::vector<Graph::weight_t> Graph::dijkstra_priority_queue(
   parent.insert({source, -1});
 
   // Insert source itself in priority queue and initialize its distance as 0.
-  pq.push(std::make_pair(0., source));
-  distances[source] = 0.;
+  priority_queue.push(std::make_pair(0., source));
+  distances.at(source) = 0.;
 
   // Looping till priority queue becomes empty (or all
   // distances are not finalized)
-  while (!pq.empty()) {
-    // The first item in pair is the minimum distance vertex, extract it from
-    // priority queue. vertex label is the second item in the pair to keep the
-    // vertices sorted by distance
-    vertex_t u = pq.top().second;
-    pq.pop();
+  while (!priority_queue.empty()) {
+    // {min_weight, vertex} sorted based on weights (distance)
+    vertex_t u = priority_queue.top().second;
+    priority_queue.pop();
 
     // Set the current vertex as processed
     shortest_path_tree.at(u) = true;
@@ -157,20 +156,22 @@ std::vector<Graph::weight_t> Graph::dijkstra_priority_queue(
       const vertex_t neighbour = edge->first.second;
       const weight_t weight = edge->second;
 
+      // Distance from source to neighbour
+      // distance_u = distance to current node + weight of edge u to neighbour
+      const weight_t distance_u = distances.at(u) + weight;
       // If there is shorted path to neighbour vertex through u.
-      if (distances[neighbour] > distances[u] + weight) {
-        if (!shortest_path_tree[neighbour]) parent[neighbour] = u;
-
-        // Updating distance of vertex
-        distances[neighbour] = distances[u] + weight;
-        pq.push(std::make_pair(distances[neighbour], neighbour));
+      if (distances.at(neighbour) > distance_u) {
+        if (!shortest_path_tree.at(neighbour)) parent[neighbour] = u;
+        // Update distance of the vertex
+        distances.at(neighbour) = distance_u;
+        priority_queue.push(std::make_pair(distance_u, neighbour));
       }
     }
   }
   // print the path
   if (destination != -1) {
     std::cout << "Source: " << source << " destination: " << destination
-              << " distance: " << distances[destination] << " path: ";
+              << " distance: " << distances.at(destination) << " path: ";
     const auto&& path = get_path(parent, destination);
     for (const auto& item : path) std::cout << item << "->";
     std::cout << destination << "\n";

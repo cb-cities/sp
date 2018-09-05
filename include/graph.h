@@ -21,7 +21,7 @@ class Graph {
   using vertex_t = int;
   //! Weight type, that can be added with +
   using weight_t = double;
-  using gpair = std::pair<vertex_t, weight_t>;
+  using vertex_weight_t = std::pair<vertex_t, weight_t>;
   //! Edge {{v1, v2}, weight}
   using Edge = std::pair<std::pair<vertex_t, vertex_t>, weight_t>;
 
@@ -59,10 +59,10 @@ class Graph {
 
   //! Compute the shortest path using priority queue
   //! \param[in] source ID of source vertex1
-  //! \param[in] destination ID of destination vertex
+  //! \param[in] destination ID of destination vertex (default is -1 for SSSP)
   //! \retval distances Shortest path distances
   std::vector<weight_t> dijkstra_priority_queue(vertex_t source,
-                                                vertex_t destination);
+                                                vertex_t destination = -1);
 
  private:
   //! Assign number of vertices

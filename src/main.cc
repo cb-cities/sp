@@ -14,8 +14,10 @@ int main(int argc, char** argv) {
     graph->generate_simple_graph();
   }
 
-  const auto distances = graph->dijkstra_priority_queue(1, -1);
+  // const auto distances = graph->dijkstra_priority_queue(1, -1);
+  const auto distances = graph->dijkstra_priority_queue(1);
   std::cout << "Dijkstra PriorityQueue\n";
+
   /*
   unsigned i = 0;
   for (const auto& distance : distances) {
