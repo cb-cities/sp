@@ -44,10 +44,6 @@ class Graph {
   //! Read MatrixMarket graph file format
   void read_graph_matrix_market(const std::string& filename);
 
-  //! Compute the shortest path using binary heap queue dijkstra
-  std::unordered_map<vertex_t, weight_t> dijkstra_heap_queue(vertex_t source,
-                                                             vertex_t dest);
-
   //! Compute the shortest path using priority queue
   std::vector<weight_t> dijkstra_priority_queue(vertex_t src, vertex_t dest);
 
