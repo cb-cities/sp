@@ -39,6 +39,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 # Include directories
 include_directories(BEFORE
   ${sp_SOURCE_DIR}/include/
+  ${sp_SOURCE_DIR}/external/
 )
 
 # sp executable
@@ -48,10 +49,20 @@ SET(sp_src
 
 add_executable(sp ${sp_src} ${sp_SOURCE_DIR}/src/main.cc)
 
+# Unit test
+if(SP_BUILD_TESTING)
+  SET(test_src
+    ${sp_SOURCE_DIR}/tests/test_main.cc
+    ${sp_SOURCE_DIR}/tests/graph_test.cc
+    )
+  add_executable(sptest ${sp_src} ${test_src})
+  add_test(NAME sptest COMMAND $<TARGET_FILE:sptest>)
+  enable_testing()
+endif()
 
 # Coverage
 find_package(codecov)
 if(ENABLE_COVERAGE)
   #add_executable(mpmtest_coverage ${mpm_src} ${test_src})
-  add_coverage(sp)
+  add_coverage(sptest)
 endif()
