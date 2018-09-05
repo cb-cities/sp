@@ -1,6 +1,6 @@
 #include "graph.h"
 
-//! Add edge
+// Add edge
 inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
                             Graph::weight_t weight = 1) {
 
@@ -27,19 +27,22 @@ inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   }
 }
 
+// Remove edge
 void Graph::remove_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2) {
-  const std::shared_ptr<Graph::Edge>& edge =
-      edges_.at(std::make_tuple(edge->first.first, edge->first.second));
-  edges_.erase(std::make_tuple(edge->first.first, edge->first.second));
-  auto v1edge = vertex_edges_[edge->first.first];
-  auto v2edge = vertex_edges_[edge->first.second];
-  v1edge.erase(remove(v1edge.begin(), v1edge.end(), edge), v1edge.end());
-  v2edge.erase(remove(v2edge.begin(), v2edge.end(), edge), v2edge.end());
-  vertex_edges_[edge->first.first] = v1edge;
-  vertex_edges_[edge->first.second] = v2edge;
+  auto edge = edges_[std::make_tuple(vertex1, vertex2)];
+  edges_.erase(edges_.find(std::make_tuple(vertex1, vertex2)));
+
+  auto v1edge = vertex_edges_.at(vertex1);
+  auto v2edge = vertex_edges_.at(vertex2);
+
+  v1edge.erase(std::remove(v1edge.begin(), v1edge.end(), edge));
+  v2edge.erase(std::remove(v2edge.begin(), v2edge.end(), edge));
+
+  vertex_edges_[vertex1] = v1edge;
+  vertex_edges_[vertex2] = v2edge;
 }
 
-//! Read MatrixMarket graph file format
+// Read MatrixMarket graph file format
 void Graph::read_graph_matrix_market(const std::string& filename) {
   std::fstream file;
   file.open(filename.c_str(), std::ios::in);

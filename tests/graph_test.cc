@@ -9,7 +9,7 @@ TEST_CASE("Graph is checked", "[graph][od]") {
   // Tolerance
   const double Tolerance = 1.E-7;
 
-  SECTION("Directed graph") {
+  SECTION("Test SSSP in directed graph") {
     // Set graph properties
     const bool directed = true;
 
@@ -21,15 +21,32 @@ TEST_CASE("Graph is checked", "[graph][od]") {
     // Run Dijkstra Priority Queue
     Graph::vertex_t source = 1;
     Graph::vertex_t destination = 3;
-    const auto distances = graph->dijkstra_priority_queue(source, destination);
+    auto distances = graph->dijkstra_priority_queue(source, destination);
 
     // Check distances
     REQUIRE(distances.size() == graph->nvertices());
     // Check shortest path
     REQUIRE(distances.at(3) == Approx(7.2).epsilon(Tolerance));
+
+    // Check remove edge
+    SECTION("Check remove edge") {
+      // Remove edge (3, 1)
+      graph->remove_edge(3, 1);
+      // Run Dijkstra Priority Queue
+      distances = graph->dijkstra_priority_queue(source, destination);
+      // Check shortest path
+      REQUIRE(distances.at(3) == Approx(7.2).epsilon(Tolerance));
+
+      // Remove edge (2, 4)
+      graph->remove_edge(2, 1);
+      // Run Dijkstra Priority Queue
+      distances = graph->dijkstra_priority_queue(source, destination);
+      // Check shortest path
+      REQUIRE(distances.at(3) == Approx(9.1).epsilon(Tolerance));
+    }
   }
 
-  SECTION("Undirected graph") {
+  SECTION("Test SSSP in undirected graph") {
     const bool directed = false;
     // Create graph object
     auto graph = std::make_unique<Graph>(directed);
@@ -39,11 +56,21 @@ TEST_CASE("Graph is checked", "[graph][od]") {
     // Run Dijkstra Priority Queue
     Graph::vertex_t source = 1;
     Graph::vertex_t destination = 3;
-    const auto distances = graph->dijkstra_priority_queue(source, destination);
+    auto distances = graph->dijkstra_priority_queue(source, destination);
 
     // Check distances
     REQUIRE(distances.size() == graph->nvertices());
     // Check shortest path
     REQUIRE(distances.at(3) == Approx(5.6).epsilon(Tolerance));
+
+    // Check remove edge
+    SECTION("Check remove edge") {
+      // Remove edge (3, 1)
+      graph->remove_edge(3, 1);
+      // Run Dijkstra Priority Queue
+      distances = graph->dijkstra_priority_queue(source, destination);
+      // Check shortest path
+      REQUIRE(distances.at(3) == Approx(9.1).epsilon(Tolerance));
+    }
   }
 }
