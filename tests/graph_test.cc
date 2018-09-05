@@ -38,7 +38,7 @@ TEST_CASE("Graph is checked", "[graph][od]") {
       REQUIRE(distances.at(3) == Approx(7.2).epsilon(Tolerance));
 
       // Remove edge (2, 4)
-      graph->remove_edge(2, 1);
+      graph->remove_edge(2, 4);
       // Run Dijkstra Priority Queue
       distances = graph->dijkstra_priority_queue(source, destination);
       // Check shortest path
