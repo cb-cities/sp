@@ -115,11 +115,18 @@ void Graph::generate_simple_graph() {
 // Dijktra shortest paths from src to all other vertices
 ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
                                             vertex_t destination) {
+
+  // Using lambda to compare elements.
+  auto compare = [](std::pair<Graph::weight_t, Graph::vertex_t> left,
+                    std::pair<Graph::weight_t, Graph::vertex_t> right) {
+    return left.first > right.first;
+  };
+
   // Create a priority queue to store weights and vertices
   std::priority_queue<std::pair<Graph::weight_t, Graph::vertex_t>,
                       std::vector<std::pair<Graph::weight_t, Graph::vertex_t>>,
-                      std::greater<std::pair<Graph::weight_t, Graph::vertex_t>>>
-      priority_queue;
+                      decltype(compare)>
+      priority_queue(compare);
 
   // Create a shortest path object.
   ShortestPath sp;
@@ -127,15 +134,16 @@ ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
   sp.distances.clear();
   sp.distances.resize(nvertices_, std::numeric_limits<weight_t>::max());
 
-  // shortest_path_tree[i] will be true if vertex i is included / in shortest
-  // path tree or shortest distance from src to i is finalized
+  // shortest_path_tree[i] will be true if vertex i is included / in
+  // shortest path tree or shortest distance from src to i is finalized
   std::vector<bool> shortest_path_tree(nvertices_, false);
 
   // Parent array to store shortest path tree
   sp.parent.clear();
   sp.parent.insert({source, -1});
 
-  // Insert source itself in priority queue and initialize its distance as 0.
+  // Insert source itself in priority queue and initialize its distance as
+  // 0.
   priority_queue.push(std::make_pair(0., source));
   sp.distances.at(source) = 0.;
 
@@ -159,7 +167,8 @@ ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
       const weight_t weight = edge->second;
 
       // Distance from source to neighbour
-      // distance_u = distance to current node + weight of edge u to neighbour
+      // distance_u = distance to current node + weight of edge u to
+      // neighbour
       const weight_t distance_u = sp.distances.at(u) + weight;
       // If there is shorted path to neighbour vertex through u.
       if (sp.distances.at(neighbour) > distance_u) {

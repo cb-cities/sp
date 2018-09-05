@@ -17,11 +17,9 @@ int main(int argc, char** argv) {
   // const auto distances = graph->dijkstra_priority_queue(1, -1);
   const auto sp = graph->dijkstra_priority_queue(1);
   std::cout << "Dijkstra PriorityQueue\n";
-  /*
   unsigned i = 0;
   for (const auto& distance : sp.distances) {
     std::cout << i << "\t" << distance << "\n";
     ++i;
   }
-  */
 }
