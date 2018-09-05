@@ -54,7 +54,8 @@ class Graph {
   //! \param[in] source ID of source vertex1
   //! \param[in] destination ID of destination vertex
   //! \retval distances Shortest path distances
-  std::vector<weight_t> dijkstra_priority_queue(vertex_t source, vertex_t destination);
+  std::vector<weight_t> dijkstra_priority_queue(vertex_t source,
+                                                vertex_t destination);
 
  private:
   //! Assign number of vertices
