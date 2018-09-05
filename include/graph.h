@@ -13,6 +13,41 @@
 #include <unordered_map>
 #include <vector>
 
+//! \brief ShortestPath struct to return source, distance and parents
+struct ShortestPath {
+  //! Vertex id type
+  using vertex_t = int;
+  //! Weight type, that can be added with +
+  using weight_t = double;
+
+  //! Get path from source to j using parent array
+  //! \param[in] parent Map of vertex to its parent id
+  //! \param[in] destination Destination vertex id to get path
+  //! \param[in] source Source vertex id to get path (SSSP set as -1)
+  //! \retval path Path from source to destination
+  std::vector<vertex_t> get_path(vertex_t source, vertex_t destination) {
+    // Create an empty path
+    std::vector<vertex_t> path;
+    // Iterate until source has been reached
+    while (destination != source) {
+      destination = parent.at(destination);
+      if (destination != source) path.emplace_back(destination);
+    }
+    // Reverse to arrange from source to destination
+    std::reverse(path.begin(), path.end());
+    return path;
+  }
+
+  //! Source
+  vertex_t source;
+  //! Destination
+  // std::vector<vertex_t> destinations;
+  //! Distances
+  std::vector<weight_t> distances;
+  //! Parent array to store shortest path tree
+  std::unordered_map<vertex_t, vertex_t> parent;
+};
+
 //! \brief Graph class to store vertices and edge and compute shortest path
 //! \details Graph class has Priority Queue Dijkstra algorithm for SSSP
 class Graph {
@@ -60,23 +95,14 @@ class Graph {
   //! Compute the shortest path using priority queue
   //! \param[in] source ID of source vertex1
   //! \param[in] destination ID of destination vertex (default is -1 for SSSP)
-  //! \retval distances Shortest path distances
-  std::vector<weight_t> dijkstra_priority_queue(vertex_t source,
-                                                vertex_t destination = -1);
+  //! \retval sp Shortest path and distances
+  ShortestPath dijkstra_priority_queue(vertex_t source,
+                                       vertex_t destination = -1);
 
  private:
   //! Assign number of vertices
   //! \param[in] nvertices Number of vertices in graph
   void assign_nvertices(unsigned nvertices) { this->nvertices_ = nvertices; }
-
-  //! Get path from source to j using parent array
-  //! \param[in] parent Map of vertex to its parent id
-  //! \param[in] destination Destination vertex id to get path
-  //! \param[in] source Source vertex id to get path (default = -1)
-  //! \retval path Path from source to destination
-  std::vector<vertex_t> get_path(
-      const std::unordered_map<vertex_t, vertex_t>& parent,
-      vertex_t destination, vertex_t source = -1);
 
   // Directed / undirected
   bool directed_{false};
