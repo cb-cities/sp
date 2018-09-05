@@ -5,7 +5,7 @@
 #include "graph.h"
 
 // Check Graph class
-TEST_CASE("Graph is checked", "[graph][sp]") {
+TEST_CASE("Graph is checked", "[graph][od]") {
   // Tolerance
   const double Tolerance = 1.E-7;
 

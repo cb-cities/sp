@@ -212,8 +212,8 @@ std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
 }
 
 // Dijktra shortest paths from src to all other vertices
-std::vector<Graph::weight_t> Graph::dijkstra_priority_queue(vertex_t source,
-                                                     vertex_t destination) {
+std::vector<Graph::weight_t> Graph::dijkstra_priority_queue(
+    vertex_t source, vertex_t destination) {
   // Create a priority queue to store vertices
   std::priority_queue<Graph::gpair, std::vector<Graph::gpair>,
                       std::greater<Graph::gpair>>
