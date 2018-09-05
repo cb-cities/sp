@@ -62,8 +62,7 @@ class Graph {
   // Number of graph vertices
   unsigned nvertices_{std::numeric_limits<unsigned>::max()};
   // Edges
-  std::unordered_map<std::tuple<vertex_t, vertex_t>, std::shared_ptr<Edge>>
-      edges_;
+  std::map<std::tuple<vertex_t, vertex_t>, std::shared_ptr<Edge>> edges_;
   // adjacency list with iteration over each edge
   std::unordered_map<vertex_t, std::vector<std::shared_ptr<Edge>>>
       vertex_edges_;
