@@ -11,9 +11,8 @@
 #include <queue>
 #include <sstream>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
-
-#include "unordered_map_tuple_hash.h"
 
 class Graph {
  public:
