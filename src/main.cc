@@ -3,15 +3,15 @@
 #include "graph.h"
 
 int main(int argc, char** argv) {
-  auto graph = std::make_shared<Graph>();
   const bool directed = true;
+  auto graph = std::make_shared<Graph>(directed);
   if (argc > 1) {
     // Read MatrixMarket file
     const std::string filename = argv[1];
-    graph->read_graph_matrix_market(filename, directed);
+    graph->read_graph_matrix_market(filename);
   } else {
     // Generate a simple graph
-    graph->generate_simple_graph(directed);
+    graph->generate_simple_graph();
   }
 
   const auto dist = graph->dijkstra(1, -1);
@@ -19,6 +19,11 @@ int main(int argc, char** argv) {
   for (const std::pair<Graph::vertex_t, Graph::weight_t>& p : dist)
     std::cout << p.first << " dist " << p.second << std::endl;
 
+  const auto distances = graph->dijkstra_priority_queue(1, 3);
   std::cout << "Dijkstra PriorityQueue\n";
-  graph->dijkstra_priority_queue(1, 3);
+  unsigned i = 0;
+  for (const auto& distance : distances) {
+    std::cout << i << "\t" << distance << "\n";
+    ++i;
+  }
 }

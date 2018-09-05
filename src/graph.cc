@@ -2,9 +2,9 @@
 
 //! Add edge
 inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
-                            Graph::weight_t weight, bool directed) {
+                            Graph::weight_t weight) {
 
-  if (!directed)
+  if (!this->directed_)
     if (vertex1 > vertex2) std::swap(vertex1, vertex2);
 
   // Create an edge
@@ -18,7 +18,7 @@ inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   vertex_edges_[vertex1] =
       std::vector<std::shared_ptr<Graph::Edge>>(vertex1_edges);
 
-  if (!directed) {
+  if (!this->directed_) {
     // Vertex 2
     auto vertex2_edges = vertex_edges_[vertex2];
     vertex2_edges.emplace_back(edge);
@@ -38,8 +38,7 @@ void Graph::remove_edge(const std::shared_ptr<Graph::Edge>& edge) {
 }
 
 //! Read MatrixMarket graph file format
-void Graph::read_graph_matrix_market(const std::string& filename,
-                                     bool directed) {
+void Graph::read_graph_matrix_market(const std::string& filename) {
   std::fstream file;
   file.open(filename.c_str(), std::ios::in);
   try {
@@ -66,7 +65,7 @@ void Graph::read_graph_matrix_market(const std::string& filename,
           while (istream.good()) {
             // Read vertices edges and weights
             istream >> v1 >> v2 >> weight;
-            this->add_edge(v1, v2, weight, directed);
+            this->add_edge(v1, v2, weight);
           }
         }
       }
@@ -77,20 +76,20 @@ void Graph::read_graph_matrix_market(const std::string& filename,
   std::cout << "Graph size: " << this->edges_.size() << "\n";
 }
 
-void Graph::generate_simple_graph(bool directed) {
+void Graph::generate_simple_graph() {
   this->assign_nvertices(7);
   // set up a simple graph
-  this->add_edge(1, 2, 1.5, directed);
-  this->add_edge(1, 3, 9.1, directed);
-  this->add_edge(1, 6, 14.3, directed);
-  this->add_edge(2, 1, 0.9, directed);
-  this->add_edge(2, 3, 15.9, directed);
-  this->add_edge(2, 4, 5.5, directed);
-  this->add_edge(3, 4, 11.6, directed);
-  this->add_edge(3, 6, 2.4, directed);
-  this->add_edge(4, 3, 0.2, directed);
-  this->add_edge(4, 5, 6.2, directed);
-  this->add_edge(5, 6, 9.7, directed);
+  this->add_edge(1, 2, 1.5);
+  this->add_edge(1, 3, 9.1);
+  this->add_edge(1, 6, 14.3);
+  this->add_edge(2, 3, 15.9);
+  this->add_edge(2, 4, 5.5);
+  this->add_edge(3, 1, 5.6);
+  this->add_edge(3, 4, 11.6);
+  this->add_edge(3, 6, 2.4);
+  this->add_edge(4, 3, 0.2);
+  this->add_edge(4, 5, 6.2);
+  this->add_edge(5, 6, 9.7);
 }
 
 // Compute shortest path using binary heap queue dijkstra
@@ -213,7 +212,8 @@ std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
 }
 
 // Dijktra shortest paths from src to all other vertices
-void Graph::dijkstra_priority_queue(vertex_t source, vertex_t destination) {
+std::vector<Graph::weight_t> Graph::dijkstra_priority_queue(vertex_t source,
+                                                     vertex_t destination) {
   // Create a priority queue to store vertices
   std::priority_queue<Graph::gpair, std::vector<Graph::gpair>,
                       std::greater<Graph::gpair>>
@@ -266,15 +266,6 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t destination) {
       }
     }
   }
-  /*
-  // Print shortest distances stored in dist[]
-  std::cout << "Vertex  distance from source\n";
-  unsigned i = 0;
-  for (const auto& distance : distances) {
-    std::cout << i << "\t" << distance << "\n";
-    ++i;
-  }
-  */
   // print the path
   if (destination != -1) {
     std::cout << "Source: " << source << " destination: " << destination
@@ -283,6 +274,7 @@ void Graph::dijkstra_priority_queue(vertex_t source, vertex_t destination) {
     for (const auto& item : path) std::cout << item << "->";
     std::cout << destination << "\n";
   }
+  return distances;
 }
 
 // Get path from source to j using parent array

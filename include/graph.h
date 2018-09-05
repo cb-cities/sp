@@ -20,33 +20,36 @@ class Graph {
   using vertex_t = int;     // Vertex id type
   using weight_t = double;  // Weight type, that can be added with +
   using gpair = std::pair<vertex_t, weight_t>;
-  // Edge
-  // {{v1, v2}, weight}
+  //! Edge {{v1, v2}, weight}
   using Edge = std::pair<std::pair<vertex_t, vertex_t>, weight_t>;
 
-  // Assign number of vertices
+  //! Constructor
+  explicit Graph(bool directed) : directed_{directed} {};
+
+  //! Assign number of vertices
   void assign_nvertices(unsigned size) { this->nvertices_ = size; }
 
+  //! Number of vertices
+  unsigned nvertices() const { return nvertices_; }
+
   //! Add edge
-  void add_edge(vertex_t vertex1, vertex_t vertex2, weight_t weight,
-                bool directed = false);
+  void add_edge(vertex_t vertex1, vertex_t vertex2, weight_t weight);
 
   //! Remove edge
   void remove_edge(const std::shared_ptr<Edge>& edge);
 
   //! Generate a simple graph
-  void generate_simple_graph(bool directed = false);
+  void generate_simple_graph();
 
   //! Read MatrixMarket graph file format
-  void read_graph_matrix_market(const std::string& filename,
-                                bool directed = false);
+  void read_graph_matrix_market(const std::string& filename);
 
   //! Compute the shortest path using binary heap queue dijkstra
   std::unordered_map<vertex_t, weight_t> dijkstra(vertex_t source,
                                                   vertex_t dest);
 
   //! Compute the shortest path using priority queue
-  void dijkstra_priority_queue(vertex_t src, vertex_t dest);
+  std::vector<weight_t> dijkstra_priority_queue(vertex_t src, vertex_t dest);
 
   // Get path from source to j using parent array
   std::vector<vertex_t> get_path(
@@ -54,7 +57,10 @@ class Graph {
       vertex_t destination);
 
  private:
-  unsigned nvertices_;
+  // Directed / undirected
+  bool directed_{false};
+  // Number of graph vertices
+  unsigned nvertices_{std::numeric_limits<unsigned>::max()};
   // Edges
   std::unordered_map<std::tuple<vertex_t, vertex_t>, std::shared_ptr<Edge>>
       edges_;
