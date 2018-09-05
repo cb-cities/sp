@@ -43,10 +43,11 @@ void Graph::remove_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2) {
 }
 
 // Read MatrixMarket graph file format
-void Graph::read_graph_matrix_market(const std::string& filename) {
-  std::fstream file;
-  file.open(filename.c_str(), std::ios::in);
+bool Graph::read_graph_matrix_market(const std::string& filename) {
+  bool status = true;
   try {
+    std::fstream file;
+    file.open(filename.c_str(), std::ios::in);
     if (file.is_open() && file.good()) {
       // Line
       std::string line;
@@ -74,12 +75,16 @@ void Graph::read_graph_matrix_market(const std::string& filename) {
           }
         }
       }
+      std::cout << "Graph summary #edges: " << this->edges_.size()
+                << " #vertices: " << this->nvertices_ << "\n";
+    } else {
+      throw std::runtime_error("Input file not found");
     }
   } catch (std::exception& exception) {
     std::cout << "Read matrix market file: " << exception.what() << "\n";
+    status = false;
   }
-  std::cout << "Graph summary #edges: " << this->edges_.size()
-            << " #vertices: " << this->nvertices_ << "\n";
+  return status;
 }
 
 void Graph::generate_simple_graph() {

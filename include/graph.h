@@ -48,7 +48,8 @@ class Graph {
 
   //! Read MatrixMarket graph file format
   //! \param[in] filename Name of input MatrixMarket file
-  void read_graph_matrix_market(const std::string& filename);
+  //! \retval status File read status
+  bool read_graph_matrix_market(const std::string& filename);
 
   //! Compute the shortest path using priority queue
   //! \param[in] source ID of source vertex1
