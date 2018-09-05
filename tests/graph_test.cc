@@ -10,14 +10,18 @@ TEST_CASE("Graph is checked", "[graph][od]") {
   const double Tolerance = 1.E-7;
 
   SECTION("Directed graph") {
+    // Set graph properties
     const bool directed = true;
+
     // Create graph object
     auto graph = std::make_unique<Graph>(directed);
     // Create a simple example graph
     graph->generate_simple_graph();
 
     // Run Dijkstra Priority Queue
-    const auto distances = graph->dijkstra_priority_queue(1, 3);
+    Graph::vertex_t source = 1;
+    Graph::vertex_t destination = 3;
+    const auto distances = graph->dijkstra_priority_queue(source, destination);
 
     // Check distances
     REQUIRE(distances.size() == graph->nvertices());
@@ -33,7 +37,9 @@ TEST_CASE("Graph is checked", "[graph][od]") {
     graph->generate_simple_graph();
 
     // Run Dijkstra Priority Queue
-    const auto distances = graph->dijkstra_priority_queue(1, 3);
+    Graph::vertex_t source = 1;
+    Graph::vertex_t destination = 3;
+    const auto distances = graph->dijkstra_priority_queue(source, destination);
 
     // Check distances
     REQUIRE(distances.size() == graph->nvertices());
