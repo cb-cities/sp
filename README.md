@@ -3,7 +3,6 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cb-cities/sp/develop/license.md)
 [![Developer docs](https://img.shields.io/badge/developer-docs-blue.svg)](http://cb-cities.github.io/sp)
-[![User docs](https://img.shields.io/badge/user-docs-blue.svg)](https://sp.cb-cities.com/)
 [![CircleCI](https://circleci.com/gh/cb-cities/sp.svg?style=svg)](https://circleci.com/gh/cb-cities/sp)
 [![codecov](https://codecov.io/gh/cb-cities/sp/branch/develop/graph/badge.svg)](https://codecov.io/gh/cb-cities/sp)
 [![](https://img.shields.io/github/issues-raw/cb-cities/sp.svg)](https://github.com/cb-cities/sp/issues)
@@ -12,9 +11,9 @@
 
 ## Compile
 
-0. Run `mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release /path/to/CMakeLists.txt`.
+* Run `mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release /path/to/CMakeLists.txt`.
 
-1. Run `make clean && make -jN` (where N is the number of cores).
+* Run `make clean && make -jN` (where N is the number of cores).
 
 ## Run 
 
@@ -30,3 +29,9 @@
 1 dist 0
 2 dist 7.5
 ```
+
+### Run tests
+
+* Run `./sptest -s` (for a verbose output) or `ctest -VV`.
+
+* Run `./sptest -l` to see available test options

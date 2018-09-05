@@ -13,44 +13,62 @@
 #include <unordered_map>
 #include <vector>
 
+//! \brief Graph class to store vertices and edge and compute shortest path
+//! \details Graph class has Priority Queue Dijkstra algorithm for SSSP
 class Graph {
  public:
-  using vertex_t = int;     // Vertex id type
-  using weight_t = double;  // Weight type, that can be added with +
+  //! Vertex id type
+  using vertex_t = int;
+  //! Weight type, that can be added with +
+  using weight_t = double;
   using gpair = std::pair<vertex_t, weight_t>;
   //! Edge {{v1, v2}, weight}
   using Edge = std::pair<std::pair<vertex_t, vertex_t>, weight_t>;
 
-  //! Constructor
+  //! Construct directed / undirected graph
+  //! \param[in] directed Defines if the graph is directed or not
   explicit Graph(bool directed) : directed_{directed} {};
 
-  //! Assign number of vertices
-  void assign_nvertices(unsigned size) { this->nvertices_ = size; }
-
-  //! Number of vertices
+  //! Return number of vertices
   unsigned nvertices() const { return nvertices_; }
 
-  //! Add edge
+  //! Add edge to graph
+  //! \param[in] vertex1 ID of vertex1
+  //! \param[in] vertex2 ID of vertex2
+  //! \param[in] weight Weight of edge connecting vertex 1 and 2
   void add_edge(vertex_t vertex1, vertex_t vertex2, weight_t weight);
 
-  //! Remove edge
+  //! Remove edge from graph
+  //! \param[in] vertex1 ID of vertex1
+  //! \param[in] vertex2 ID of vertex2
   void remove_edge(vertex_t vertex1, vertex_t vertex2);
 
   //! Generate a simple graph
   void generate_simple_graph();
 
   //! Read MatrixMarket graph file format
+  //! \param[in] filename Name of input MatrixMarket file
   void read_graph_matrix_market(const std::string& filename);
 
   //! Compute the shortest path using priority queue
-  std::vector<weight_t> dijkstra_priority_queue(vertex_t src, vertex_t dest);
+  //! \param[in] source ID of source vertex1
+  //! \param[in] destination ID of destination vertex
+  //! \retval distances Shortest path distances
+  std::vector<weight_t> dijkstra_priority_queue(vertex_t source, vertex_t destination);
 
-  // Get path from source to j using parent array
+ private:
+  //! Assign number of vertices
+  //! \param[in] nvertices Number of vertices in graph
+  void assign_nvertices(unsigned nvertices) { this->nvertices_ = nvertices; }
+
+  //! Get path from source to j using parent array
+  //! \param[in] parent Map of vertex to its parent id
+  //! \param[in] destination Destination vertex id to get path
+  //! \retval path Path from source to destination
   std::vector<vertex_t> get_path(
       const std::unordered_map<vertex_t, vertex_t>& parent,
       vertex_t destination);
 
- private:
   // Directed / undirected
   bool directed_{false};
   // Number of graph vertices

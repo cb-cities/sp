@@ -5,10 +5,11 @@
 #include "graph.h"
 
 // Check Graph class
-TEST_CASE("Graph is checked", "[graph][od]") {
+TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
   // Tolerance
   const double Tolerance = 1.E-7;
 
+  // Test directed graph
   SECTION("Test SSSP in directed graph") {
     // Set graph properties
     const bool directed = true;
@@ -46,6 +47,7 @@ TEST_CASE("Graph is checked", "[graph][od]") {
     }
   }
 
+  // Test undirected graph
   SECTION("Test SSSP in undirected graph") {
     const bool directed = false;
     // Create graph object
