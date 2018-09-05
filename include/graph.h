@@ -72,10 +72,11 @@ class Graph {
   //! Get path from source to j using parent array
   //! \param[in] parent Map of vertex to its parent id
   //! \param[in] destination Destination vertex id to get path
+  //! \param[in] source Source vertex id to get path (default = -1)
   //! \retval path Path from source to destination
   std::vector<vertex_t> get_path(
       const std::unordered_map<vertex_t, vertex_t>& parent,
-      vertex_t destination);
+      vertex_t destination, vertex_t source = -1);
 
   // Directed / undirected
   bool directed_{false};
