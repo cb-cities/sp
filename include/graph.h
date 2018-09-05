@@ -36,7 +36,7 @@ class Graph {
   void add_edge(vertex_t vertex1, vertex_t vertex2, weight_t weight);
 
   //! Remove edge
-  void remove_edge(const std::shared_ptr<Edge>& edge);
+  void remove_edge(vertex_t vertex1, vertex_t vertex2);
 
   //! Generate a simple graph
   void generate_simple_graph();
@@ -45,8 +45,8 @@ class Graph {
   void read_graph_matrix_market(const std::string& filename);
 
   //! Compute the shortest path using binary heap queue dijkstra
-  std::unordered_map<vertex_t, weight_t> dijkstra(vertex_t source,
-                                                  vertex_t dest);
+  std::unordered_map<vertex_t, weight_t> dijkstra_heap_queue(vertex_t source,
+                                                             vertex_t dest);
 
   //! Compute the shortest path using priority queue
   std::vector<weight_t> dijkstra_priority_queue(vertex_t src, vertex_t dest);

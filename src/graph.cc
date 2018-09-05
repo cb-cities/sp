@@ -2,7 +2,7 @@
 
 //! Add edge
 inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
-                            Graph::weight_t weight) {
+                            Graph::weight_t weight = 1) {
 
   if (!this->directed_)
     if (vertex1 > vertex2) std::swap(vertex1, vertex2);
@@ -27,7 +27,9 @@ inline void Graph::add_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   }
 }
 
-void Graph::remove_edge(const std::shared_ptr<Graph::Edge>& edge) {
+void Graph::remove_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2) {
+  const std::shared_ptr<Graph::Edge>& edge =
+      edges_.at(std::make_tuple(edge->first.first, edge->first.second));
   edges_.erase(std::make_tuple(edge->first.first, edge->first.second));
   auto v1edge = vertex_edges_[edge->first.first];
   auto v2edge = vertex_edges_[edge->first.second];
@@ -73,7 +75,8 @@ void Graph::read_graph_matrix_market(const std::string& filename) {
   } catch (std::exception& exception) {
     std::cout << "Read matrix market file: " << exception.what() << "\n";
   }
-  std::cout << "Graph size: " << this->edges_.size() << "\n";
+  std::cout << "Graph summary #edges: " << this->edges_.size()
+            << " #vertices: " << this->nvertices_ << "\n";
 }
 
 void Graph::generate_simple_graph() {
@@ -93,7 +96,7 @@ void Graph::generate_simple_graph() {
 }
 
 // Compute shortest path using binary heap queue dijkstra
-std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra(
+std::unordered_map<Graph::vertex_t, Graph::weight_t> Graph::dijkstra_heap_queue(
     Graph::vertex_t source, Graph::vertex_t dest) {
   std::unordered_map<Graph::vertex_t, Graph::vertex_t> prev;
   // parallel map and priority queue
@@ -229,7 +232,7 @@ std::vector<Graph::weight_t> Graph::dijkstra_priority_queue(
 
   // Parent array to store shortest path tree
   std::unordered_map<vertex_t, vertex_t> parent;
-  parent[source] = -1;
+  parent.insert({source, -1});
 
   // Insert source itself in priority queue and initialize its distance as 0.
   pq.push(std::make_pair(0., source));
