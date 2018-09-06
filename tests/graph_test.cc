@@ -64,6 +64,30 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
     }
   }
 
+  // Test Single Source Multiple Destinations directed graph
+  SECTION("Test Single Source Multiple Destinations in directed graph") {
+    // Set graph properties
+    const bool directed = true;
+
+    // Create graph object
+    auto graph = std::make_unique<Graph>(directed);
+    // Create a simple example graph
+    graph->generate_simple_graph();
+
+    // Run Dijkstra Priority Queue
+    Graph::vertex_t source = 1;
+    std::vector<Graph::vertex_t> destinations{2, 3};
+    auto sp = graph->dijkstra_priority_queue(source, destinations);
+    auto distances = sp.distances;
+
+    // Check distances
+    REQUIRE(distances.size() == graph->nvertices());
+    // Check shortest path
+    REQUIRE(distances.at(2) == Approx(1.5).epsilon(Tolerance));
+    // Check shortest path
+    REQUIRE(distances.at(3) == Approx(7.2).epsilon(Tolerance));
+  }
+
   // Test undirected graph
   SECTION("Test SSSP in undirected graph") {
     const bool directed = false;
@@ -95,6 +119,30 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
       // Check shortest path
       REQUIRE(distances.at(3) == Approx(9.1).epsilon(Tolerance));
     }
+  }
+
+  // Test Single Source Multiple Destinations undirected graph
+  SECTION("Test Single Source Multiple Destinations in undirected graph") {
+    // Set graph properties
+    const bool directed = false;
+
+    // Create graph object
+    auto graph = std::make_unique<Graph>(directed);
+    // Create a simple example graph
+    graph->generate_simple_graph();
+
+    // Run Dijkstra Priority Queue
+    Graph::vertex_t source = 1;
+    std::vector<Graph::vertex_t> destinations{2, 3};
+    auto sp = graph->dijkstra_priority_queue(source, destinations);
+    auto distances = sp.distances;
+
+    // Check distances
+    REQUIRE(distances.size() == graph->nvertices());
+    // Check shortest path
+    REQUIRE(distances.at(2) == Approx(1.5).epsilon(Tolerance));
+    // Check shortest path
+    REQUIRE(distances.at(3) == Approx(5.6).epsilon(Tolerance));
   }
 
   SECTION("Test SSSP in directed graph from file") {
