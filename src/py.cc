@@ -7,6 +7,7 @@ extern "C" {
     int ndestination; 
     int* destination;
     double* distance;
+    int* parent;
   };
 
   Graph* simplegraph(bool directed) {
@@ -21,9 +22,13 @@ extern "C" {
     return graph;
   }
 
-  int shortestpath(ShortestPath_py* ret, Graph* graph, int origin, int* destination, int ndest) {
-    const auto sp = graph->dijkstra_priority_queue(origin, std::vector<int>(destination, destination+ndest));
+  ShortestPath* shortestpath(Graph* graph, int origin) { //, int* destination, int ndest) {
+    ShortestPath* sp = new ShortestPath(
+      graph->dijkstra_priority_queue(origin) //, std::vector<int>(destination, destination+ndest));
+        );
+    return sp;
 
+    /*
     ret->destination = new int[ndest];
     ret->distance = new double[ndest];
     ret->ndestination = ndest;
@@ -31,8 +36,14 @@ extern "C" {
     for (unsigned i = 0; i < ndest; ++i) {
       ret->destination[i] = destination[i];
       ret->distance[i] = sp.distances[destination[i]];
+      ret->parent[i] = sp.parent[destination[i]];
     }
 
     return 0;
+    */
+  }
+
+  double distance(ShortestPath *sp, int destination) {
+    return sp->distances[destination];
   }
 }
