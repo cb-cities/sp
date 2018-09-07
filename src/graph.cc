@@ -130,6 +130,9 @@ ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
 
   // Create a shortest path object.
   ShortestPath sp;
+  sp.source = source;
+
+
   // Create a vector for distances and initialize all to max
   sp.distances.clear();
   sp.distances.resize(nvertices_, std::numeric_limits<weight_t>::max());

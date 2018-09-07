@@ -7,8 +7,23 @@ libsp = cdll.LoadLibrary("./liblsp.so")
 libsp.distance.restype = c_double
 
 class ShortestPath(Structure):
+    @property
+    def origin(self):
+        return libsp.origin(byref(self))
+
     def distance(self, destination):
         return libsp.distance(byref(self), destination)
+
+    def parent(self, destination):
+        return libsp.parent(byref(self), destination)
+
+    def route(self, destination):
+        path = []
+        while destination != self.origin:
+            parent = self.parent(destination)
+            path.append(parent)
+            destination = parent
+        return reversed(path)
 
 libsp.shortestpath.restype = POINTER(ShortestPath)
 
@@ -31,11 +46,13 @@ def test():
     g = simplegraph()
     sp = g.dijkstra(1)
 
-    for destination in [2,3]:
-        print(destination, sp.distance(destination))
+    print("origin:", sp.origin)
 
-#        for edge in sp.route(destination):
-#            print(edge.v1, edge.v2)
+    for destination in [2,3]:
+        print(destination, sp.distance(destination), sp.parent(destination))
+
+        for vertex in sp.route(destination):
+           print(vertex)
 
 if __name__ == '__main__':
     test()
