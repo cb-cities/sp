@@ -9,7 +9,7 @@ extern "C" {
   };
 
 
-  ShortestPath_py* py_main(const char* filename, int origin, int destination) {
+  int py_main(ShortestPath_py* ret, const char* filename, int origin, int destination) {
     std::cout << "filename: " << filename << std::endl;
 
     const bool directed = true;
@@ -18,10 +18,9 @@ extern "C" {
     graph->generate_simple_graph();
     const auto sp = graph->dijkstra_priority_queue(origin, destination);
 
-    ShortestPath_py *ret = (ShortestPath_py*)malloc(sizeof(ShortestPath_py));
     ret->destination = destination;
     ret->distance = sp.distances[destination];
 
-    return ret;
+    return 0;
   }
 }
