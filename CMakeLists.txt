@@ -49,6 +49,8 @@ SET(sp_src
 
 add_executable(sp ${sp_src} ${sp_SOURCE_DIR}/src/main.cc)
 
+add_library(lsp SHARED ${sp_src} ${sp_SOURCE_DIR}/src/py.cc)
+
 # Unit test
 if(SP_BUILD_TESTING)
   SET(test_src
