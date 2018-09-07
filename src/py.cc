@@ -11,6 +11,7 @@ extern "C" {
 
   Graph* readgraph(char* filename, bool directed) {
     Graph* graph = new Graph(directed);
+    std::cout<< "filename: " << filename << std::endl;
     graph->read_graph_matrix_market(filename);
     return graph;
   }

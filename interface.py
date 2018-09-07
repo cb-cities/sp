@@ -21,7 +21,7 @@ class ShortestPath(Structure):
         if destination != self.origin:
             parent = self.parent(destination)
             yield from self.route(parent)
-            yield parent
+            yield parent, destination
 
 libsp.shortestpath.restype = POINTER(ShortestPath)
 
@@ -42,15 +42,15 @@ def readgraph(filename, directed=True):
 
 def test():
     g = simplegraph()
+    g = readgraph(b"../sf.mtx")
     sp = g.dijkstra(1)
 
     print("origin:", sp.origin)
 
     for destination in [2,3]:
-        print(destination, sp.distance(destination), sp.parent(destination))
+        print(destination, sp.distance(destination))
 
-        for vertex in sp.route(destination):
-           print(vertex)
+        print( " -> ".join("%s"%vertex[1] for vertex in sp.route(destination)) )
 
 if __name__ == '__main__':
     test()
