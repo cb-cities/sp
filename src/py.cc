@@ -4,8 +4,9 @@
 extern "C" {
 
   struct ShortestPath_py {
-    int destination;
-    double distance;
+    int ndestination; 
+    int* destination;
+    double* distance;
   };
 
   Graph* simplegraph(bool directed) {
@@ -20,10 +21,18 @@ extern "C" {
     return graph;
   }
 
-  int shortestpath(ShortestPath_py* ret, Graph* graph, int origin, int destination) {
-    const auto sp = graph->dijkstra_priority_queue(origin, destination);
-    ret->destination = destination;
-    ret->distance = sp.distances[destination];
+  int shortestpath(ShortestPath_py* ret, Graph* graph, int origin, int* destination, int ndest) {
+    const auto sp = graph->dijkstra_priority_queue(origin, std::vector<int>(destination, destination+ndest));
+
+    ret->destination = new int[ndest];
+    ret->distance = new double[ndest];
+    ret->ndestination = ndest;
+
+    for (unsigned i = 0; i < ndest; ++i) {
+      ret->destination[i] = destination[i];
+      ret->distance[i] = sp.distances[destination[i]];
+    }
+
     return 0;
   }
 }
