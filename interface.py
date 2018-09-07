@@ -18,12 +18,10 @@ class ShortestPath(Structure):
         return libsp.parent(byref(self), destination)
 
     def route(self, destination):
-        path = []
-        while destination != self.origin:
+        if destination != self.origin:
             parent = self.parent(destination)
-            path.append(parent)
-            destination = parent
-        return reversed(path)
+            yield from self.route(parent)
+            yield parent
 
 libsp.shortestpath.restype = POINTER(ShortestPath)
 
