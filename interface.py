@@ -46,11 +46,11 @@ def test():
     g = simplegraph()
     #g = readgraph(b"../sf.mtx")
     sp = g.dijkstra(1)
-    res = g.update_edge(1, 3, 1)
+    res = g.update_edge(1, 3, c_double(0.5))
 
     print("origin:", sp.origin)
 
-    for destination in [2,3]:
+    for destination in [2, 3]:
         print(destination, sp.distance(destination))
 
         print( " -> ".join("%s"%vertex[1] for vertex in sp.route(destination)) )

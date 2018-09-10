@@ -33,6 +33,8 @@ void Graph::update_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   // Get pointer to specified edge connecting vertex 1 and 2
   auto edge = edges_.at(std::make_tuple(vertex1, vertex2));
   // Update edge weight
+  std::cout << "V1: " << vertex1 << " v2: " << vertex2 << " WEight: " << weight
+            << "\n";
   edge->second = weight;
 }
 
