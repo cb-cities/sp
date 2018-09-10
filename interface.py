@@ -28,6 +28,8 @@ libsp.shortestpath.restype = POINTER(ShortestPath)
 class Graph(Structure):
     def dijkstra(self, origin):
         return libsp.shortestpath(byref(self), origin).contents
+    def update_edge(self, origin, destination, weight):
+        return libsp.update_edge(byref(self), origin, destination, weight)
 
 libsp.simplegraph.restype = POINTER(Graph)
 libsp.readgraph.restype = POINTER(Graph)
@@ -42,8 +44,9 @@ def readgraph(filename, directed=True):
 
 def test():
     g = simplegraph()
-    g = readgraph(b"../sf.mtx")
+    #g = readgraph(b"../sf.mtx")
     sp = g.dijkstra(1)
+    res = g.update_edge(1, 3, 1)
 
     print("origin:", sp.origin)
 
