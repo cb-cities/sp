@@ -16,8 +16,9 @@ int main(int argc, char** argv) {
     graph->generate_simple_graph();
   }
 
+  // const auto distances = graph->dijkstra_priority_queue(1, -1);
   auto start = std::chrono::system_clock::now();
-  const auto sp = graph->dijkstra_priority_queue(1020, 20);
+  const auto sp = graph->dijkstra_priority_queue(1, 3);
   auto end = std::chrono::system_clock::now();
 
   std::chrono::duration<double> elapsed_seconds = end - start;
@@ -25,7 +26,6 @@ int main(int argc, char** argv) {
 
   std::cout << "finished computation at " << std::ctime(&end_time)
             << "elapsed time: " << elapsed_seconds.count() << "s\n";
-  std::cout << "Dijkstra PriorityQueue\n";
   /*
   unsigned i = 0;
   for (const auto& distance : sp.distances) {

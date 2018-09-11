@@ -30,6 +30,15 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
     // Check shortest path
     REQUIRE(distances.at(3) == Approx(7.2).epsilon(Tolerance));
 
+    // Check simple dijkstra
+    SECTION("Check vertex dijkstra") {
+      std::vector<Graph::vertex_t> path{1, 2, 4, 3};
+      auto vertices = graph->dijkstra(source, destination);
+      REQUIRE(vertices.size() == path.size());
+      for (unsigned i = 0; i < path.size(); ++i)
+        REQUIRE(vertices.at(i) == path.at(i));
+    }
+
     // Check update edge
     SECTION("Check update edge") {
       // Update edge (1, 3) to weight 3.7
@@ -107,6 +116,15 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
     REQUIRE(distances.size() == graph->nvertices());
     // Check shortest path
     REQUIRE(distances.at(3) == Approx(5.6).epsilon(Tolerance));
+
+    // Check simple dijkstra
+    SECTION("Check vertex dijkstra") {
+      std::vector<Graph::vertex_t> path{1, 3};
+      auto vertices = graph->dijkstra(source, destination);
+      REQUIRE(vertices.size() == path.size());
+      for (unsigned i = 0; i < path.size(); ++i)
+        REQUIRE(vertices.at(i) == path.at(i));
+    }
 
     // Check remove edge
     SECTION("Check remove edge") {

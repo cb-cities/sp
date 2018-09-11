@@ -45,7 +45,7 @@ struct ShortestPath {
   //! Distances
   std::vector<weight_t> distances;
   //! Parent array to store shortest path tree
-  std::unordered_map<vertex_t, vertex_t> parent;
+  std::vector<vertex_t> parent;
 };
 
 //! \brief Graph class to store vertices and edge and compute shortest path
@@ -90,6 +90,12 @@ class Graph {
   //! \param[in] filename Name of input MatrixMarket file
   //! \retval status File read status
   bool read_graph_matrix_market(const std::string& filename);
+
+  //! Compute the shortest path using priority queue
+  //! \param[in] source ID of source vertex1
+  //! \param[in] destination ID of destination vertex
+  //! \retval path Vertices of path
+  std::vector<vertex_t> dijkstra(vertex_t source, vertex_t destination);
 
   //! Compute the shortest path using priority queue
   //! \param[in] source ID of source vertex1
