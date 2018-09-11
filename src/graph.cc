@@ -173,10 +173,11 @@ std::vector<Graph::vertex_t> Graph::dijkstra(Graph::vertex_t source,
   }
 
   std::vector<vertex_t> path;
+  path.emplace_back(destination);
   // Iterate until source has been reached
   while (destination != source) {
     destination = parent.at(destination);
-    if (destination != source) path.emplace_back(destination);
+    path.emplace_back(destination);
   }
   // Reverse to arrange from source to destination
   std::reverse(path.begin(), path.end());
