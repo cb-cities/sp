@@ -10,6 +10,7 @@ bin/
 *a.out
 
 # Files
+env/
 docs/*
 CMakeCache.txt
 CMakeFiles/*

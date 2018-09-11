@@ -213,10 +213,9 @@ ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
 
   // Parent array to store shortest path tree
   sp.parent.clear();
-  sp.parent.insert({source, -1});
+  sp.parent.resize(nvertices_, -1);
 
-  // Insert source itself in priority queue and initialize its distance as
-  // 0.
+  // Insert source itself in priority queue & initialize its distance as 0.
   priority_queue.push(std::make_pair(0., source));
   sp.distances.at(source) = 0.;
 
@@ -253,13 +252,14 @@ ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
     }
   }
   // print the path
+  /*
   if (destination != -1) {
     std::cout << "Source: " << source << " destination: " << destination
               << " distance: " << sp.distances.at(destination) << " path: ";
     const auto&& path = sp.get_path(source, destination);
     for (const auto& item : path) std::cout << item << "->";
     std::cout << destination << "\n";
-  }
+    }*/
   return sp;
 }
 
@@ -295,10 +295,9 @@ ShortestPath Graph::dijkstra_priority_queue(
 
   // Parent array to store shortest path tree
   sp.parent.clear();
-  sp.parent.insert({source, -1});
+  sp.parent.resize(nvertices_, -1);
 
-  // Insert source itself in priority queue and initialize its distance as
-  // 0.
+  // Insert source itself in priority queue & initialize its distance as 0.
   priority_queue.push(std::make_pair(0., source));
   sp.distances.at(source) = 0.;
 

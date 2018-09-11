@@ -45,7 +45,7 @@ struct ShortestPath {
   //! Distances
   std::vector<weight_t> distances;
   //! Parent array to store shortest path tree
-  std::unordered_map<vertex_t, vertex_t> parent;
+  std::vector<vertex_t> parent;
 };
 
 //! \brief Graph class to store vertices and edge and compute shortest path
