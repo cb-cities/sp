@@ -47,6 +47,7 @@ def test():
     #g = readgraph(b"../sf.mtx")
     sp = g.dijkstra(1, -1)
     res = g.update_edge(1, 3, c_double(0.5))
+    sp = g.dijkstra(1, -1)
 
     print("origin:", sp.origin)
 
