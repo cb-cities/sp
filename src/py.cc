@@ -16,8 +16,8 @@ Graph* readgraph(char* filename, bool directed) {
   return graph;
 }
 
-ShortestPath* shortestpath(Graph* graph, int origin) {
-  return new ShortestPath(graph->dijkstra_priority_queue(origin));
+ShortestPath* shortestpath(Graph* graph, int origin, int destination) {
+  return new ShortestPath(graph->dijkstra_priority_queue(origin, destination));
 }
 
 void update_edge(Graph* graph, int vertex1, int vertex2, double weight) {

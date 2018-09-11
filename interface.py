@@ -3,7 +3,7 @@ from __future__ import print_function
 from sys import argv
 from ctypes import *
 
-libsp = cdll.LoadLibrary("./liblsp.so")
+libsp = cdll.LoadLibrary("./build/liblsp.so")
 libsp.distance.restype = c_double
 
 class ShortestPath(Structure):
@@ -26,8 +26,8 @@ class ShortestPath(Structure):
 libsp.shortestpath.restype = POINTER(ShortestPath)
 
 class Graph(Structure):
-    def dijkstra(self, origin):
-        return libsp.shortestpath(byref(self), origin).contents
+    def dijkstra(self, origin, destination):
+        return libsp.shortestpath(byref(self), origin, destination).contents
     def update_edge(self, origin, destination, weight):
         return libsp.update_edge(byref(self), origin, destination, weight)
 
@@ -45,7 +45,7 @@ def readgraph(filename, directed=True):
 def test():
     g = simplegraph()
     #g = readgraph(b"../sf.mtx")
-    sp = g.dijkstra(1)
+    sp = g.dijkstra(1, -1)
     res = g.update_edge(1, 3, c_double(0.5))
 
     print("origin:", sp.origin)

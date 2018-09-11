@@ -114,6 +114,75 @@ void Graph::generate_simple_graph() {
   this->add_edge(5, 6, 9.7);
 }
 
+// Dijktra shortest paths from src to single vertex
+std::vector<Graph::vertex_t> Graph::dijkstra(Graph::vertex_t source,
+                                             Graph::vertex_t destination) {
+
+  // Using lambda to compare elements.
+  auto compare = [](std::pair<Graph::weight_t, Graph::vertex_t> left,
+                    std::pair<Graph::weight_t, Graph::vertex_t> right) {
+    return left.first > right.first;
+  };
+
+  // Create a priority queue to store weights and vertices
+  std::priority_queue<std::pair<Graph::weight_t, Graph::vertex_t>,
+                      std::vector<std::pair<Graph::weight_t, Graph::vertex_t>>,
+                      decltype(compare)>
+      priority_queue(compare);
+
+  // Create a vector for distances and initialize all to max
+  std::vector<Graph::weight_t> distances;
+  distances.resize(nvertices_, std::numeric_limits<Graph::weight_t>::max());
+
+  // Parent array to store shortest path tree
+  std::vector<Graph::vertex_t> parent;
+  parent.resize(nvertices_, -1);
+
+  // Insert source itself in priority queue & initialize its distance as 0.
+  priority_queue.push(std::make_pair(0., source));
+  distances.at(source) = 0.;
+
+  // Looping till priority queue becomes empty (or all
+  // distances are not finalized)
+  while (!priority_queue.empty()) {
+    // {min_weight, vertex} sorted based on weights (distance)
+    vertex_t u = priority_queue.top().second;
+    priority_queue.pop();
+
+    // Break if destination is reached
+    if (u == destination) break;
+
+    // Get all adjacent vertices of a vertex
+    for (const auto& edge : vertex_edges_[u]) {
+      // Get vertex label and weight of neighbours of u.
+      const vertex_t neighbour = edge->first.second;
+      const weight_t weight = edge->second;
+
+      // Distance from source to neighbour
+      // distance_u = distance to current node + weight of edge u to
+      // neighbour
+      const weight_t distance_u = distances.at(u) + weight;
+      // If there is shorted path to neighbour vertex through u.
+      if (distances.at(neighbour) > distance_u) {
+        parent[neighbour] = u;
+        // Update distance of the vertex
+        distances.at(neighbour) = distance_u;
+        priority_queue.push(std::make_pair(distance_u, neighbour));
+      }
+    }
+  }
+
+  std::vector<vertex_t> path;
+  // Iterate until source has been reached
+  while (destination != source) {
+    destination = parent.at(destination);
+    if (destination != source) path.emplace_back(destination);
+  }
+  // Reverse to arrange from source to destination
+  std::reverse(path.begin(), path.end());
+  return path;
+}
+
 // Dijktra shortest paths from src to all other vertices
 ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
                                             vertex_t destination) {

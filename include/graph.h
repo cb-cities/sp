@@ -93,6 +93,12 @@ class Graph {
 
   //! Compute the shortest path using priority queue
   //! \param[in] source ID of source vertex1
+  //! \param[in] destination ID of destination vertex
+  //! \retval path Vertices of path
+  std::vector<vertex_t> dijkstra(vertex_t source, vertex_t destination);
+
+  //! Compute the shortest path using priority queue
+  //! \param[in] source ID of source vertex1
   //! \param[in] destination ID of destination vertex (default is -1 for SSSP)
   //! \retval sp Shortest path and distances
   ShortestPath dijkstra_priority_queue(vertex_t source,
