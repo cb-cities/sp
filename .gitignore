@@ -1,6 +1,7 @@
 # Temporary files
 *~*
 *#*
+__pycache__
 
 # Build directories
 build/*

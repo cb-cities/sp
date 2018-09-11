@@ -20,8 +20,9 @@ ShortestPath* shortestpath(Graph* graph, int origin, int destination) {
   return new ShortestPath(graph->dijkstra_priority_queue(origin, destination));
 }
 
-void update_edge(Graph* graph, int vertex1, int vertex2, double weight) {
+Graph* update_edge(Graph* graph, int vertex1, int vertex2, double weight) {
   graph->update_edge(vertex1, vertex2, weight);
+  return graph;
 }
 
 int origin(ShortestPath* sp) { return sp->source; }

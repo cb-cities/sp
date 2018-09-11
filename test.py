@@ -6,11 +6,11 @@ import numpy as np
 import time
 import os
 
-sys.path.insert(0, '/Users/bz247')
+sys.path.insert(0, '../')
 from sp import interface 
 
 absolute_path = os.path.dirname(os.path.abspath(__file__))
-graph_file = './network_sparse.mtx'
+graph_file = './sf.mtx'
 
 ### Time the PQ
 print('########### Priority Queue SP #############')
