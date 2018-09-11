@@ -252,14 +252,15 @@ ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
     }
   }
   // print the path
-  /*
   if (destination != -1) {
     std::cout << "Source: " << source << " destination: " << destination
               << " distance: " << sp.distances.at(destination) << " path: ";
+    /*
     const auto&& path = sp.get_path(source, destination);
     for (const auto& item : path) std::cout << item << "->";
     std::cout << destination << "\n";
-    }*/
+    */
+  }
   return sp;
 }
 
