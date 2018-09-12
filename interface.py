@@ -23,11 +23,11 @@ class ShortestPath(Structure):
             yield from self.route(parent)
             yield parent, destination
 
-libsp.shortestpath.restype = POINTER(ShortestPath)
+libsp.dijkstra.restype = POINTER(ShortestPath)
 
 class Graph(Structure):
     def dijkstra(self, origin, destination):
-        return libsp.shortestpath(byref(self), origin, destination).contents
+        return libsp.dijkstra(byref(self), origin, destination).contents
     def update_edge(self, origin, destination, weight):
         return libsp.update_edge(byref(self), origin, destination, weight)
 
