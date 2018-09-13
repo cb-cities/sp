@@ -41,6 +41,13 @@
 
 * Create a virtual environment: `virtualenv env` and activate: `source env/bin/activate`
 * Install dependencies: `pip3 install -r requirements.txt` or `pip install -r requirements.txt`
+* Benchmark Dijkstra PQ vs iGraph: `python3 ./interface.py`
+
+### Run python benchmarks
+> Requires Python3
+
+* Create a virtual environment: `virtualenv env` and activate: `source env/bin/activate`
+* Install dependencies: `pip3 install -r requirements.txt` or `pip install -r requirements.txt`
 * Benchmark Dijkstra PQ vs iGraph: `python3 ./benchmark_dijkstra.py`
 
 
