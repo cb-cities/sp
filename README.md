@@ -1,4 +1,4 @@
-# Dijkstra Binary Heap Queue
+# Dijkstra Prioriy Queue
 > CB-Cities
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cb-cities/sp/develop/license.md)
@@ -35,3 +35,12 @@
 * Run `./sptest -s` (for a verbose output) or `ctest -VV`.
 
 * Run `./sptest -l` to see available test options
+
+### Run python interface
+> Requires Python3
+
+* Create a virtual environment: `virtualenv env` and activate: `source env/bin/activate`
+* Install dependencies: `pip3 install -r requirements.txt` or `pip install -r requirements.txt`
+* Benchmark Dijkstra PQ vs iGraph: `python3 ./benchmark_dijkstra.py`
+
+
