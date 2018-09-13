@@ -170,13 +170,13 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
     // Create graph object
     auto graph = std::make_unique<Graph>(directed);
     // Read MatrixMarket file
-    const std::string filename = "../sf.mtx";
+    const std::string filename = "../network.mtx";
     // Read file
     REQUIRE(graph->read_graph_matrix_market(filename) == true);
 
     // Run Dijkstra Priority Queue
-    Graph::vertex_t source = 1;
-    Graph::vertex_t destination = 3;
+    Graph::vertex_t source = 1020;
+    Graph::vertex_t destination = 20;
     auto sp = graph->dijkstra_priority_queue(source, destination);
     // Get distances
     auto distances = sp.distances;
@@ -184,7 +184,7 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
     // Check distances
     REQUIRE(distances.size() == graph->nvertices());
     // Check shortest path
-    REQUIRE(distances.at(3) == Approx(12756.7622297699).epsilon(Tolerance));
+    REQUIRE(distances.at(20) == Approx(12409.660000000002).epsilon(Tolerance));
 
     SECTION("Test non-existant file") {
       // Create graph object

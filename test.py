@@ -10,7 +10,7 @@ sys.path.insert(0, '../')
 from sp import interface 
 
 absolute_path = os.path.dirname(os.path.abspath(__file__))
-graph_file = './network-sparse.mtx'
+graph_file = './network.mtx'
 
 ### Time the PQ
 print('########### Priority Queue SP #############')
