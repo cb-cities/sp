@@ -188,6 +188,14 @@ std::vector<Graph::vertex_t> Graph::dijkstra(Graph::vertex_t source,
 ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
                                             vertex_t destination) {
 
+  // Create a shortest path object.
+  ShortestPath sp;
+  sp.source = source;
+
+  if (source < 0 || source > nvertices_ || destination < 0 ||
+      destination > nvertices_)
+    return sp;
+
   // Using lambda to compare elements.
   auto compare = [](std::pair<Graph::weight_t, Graph::vertex_t> left,
                     std::pair<Graph::weight_t, Graph::vertex_t> right) {
@@ -199,10 +207,6 @@ ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
                       std::vector<std::pair<Graph::weight_t, Graph::vertex_t>>,
                       decltype(compare)>
       priority_queue(compare);
-
-  // Create a shortest path object.
-  ShortestPath sp;
-  sp.source = source;
 
   // Create a vector for distances and initialize all to max
   sp.distances.clear();
