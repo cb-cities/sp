@@ -33,8 +33,6 @@ void Graph::update_edge(Graph::vertex_t vertex1, Graph::vertex_t vertex2,
   // Get pointer to specified edge connecting vertex 1 and 2
   auto edge = edges_.at(std::make_tuple(vertex1, vertex2));
   // Update edge weight
-  std::cout << "V1: " << vertex1 << " v2: " << vertex2 << " WEight: " << weight
-            << "\n";
   edge->second = weight;
 }
 
@@ -191,7 +189,7 @@ ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
   // Create a shortest path object.
   ShortestPath sp;
   sp.source = source;
-
+  sp.distances.clear();
   if (source < 0 || source > nvertices_ || destination < 0 ||
       destination > nvertices_)
     return sp;
@@ -209,7 +207,6 @@ ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
       priority_queue(compare);
 
   // Create a vector for distances and initialize all to max
-  sp.distances.clear();
   sp.distances.resize(nvertices_, std::numeric_limits<weight_t>::max());
 
   // Parent array to store shortest path tree

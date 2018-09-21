@@ -1,3 +1,4 @@
+#include <limits>
 #include <memory>
 
 #include "graph.h"
@@ -47,7 +48,8 @@ int origin(ShortestPath* sp) { return sp->source; }
 //! \param[in] sp Shortest path object
 //! \param[in] destination Destination of the shortest path
 double distance(ShortestPath* sp, int destination) {
-  return sp->distances[destination];
+  return (sp->distances.size() == 0 ? std::numeric_limits<double>::max()
+                                    : sp->distances[destination]);
 }
 
 //! return the parent of a vertex in shortest path tree
