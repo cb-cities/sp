@@ -45,7 +45,6 @@ def readgraph(filename, directed=True):
 def test():
     g = simplegraph()
     #g = readgraph(b"../sf.mtx")
-    sp = g.dijkstra(1, -1)
     res = g.update_edge(1, 3, c_double(0.5))
     sp = g.dijkstra(1, -1)
 
