@@ -30,6 +30,8 @@ class Graph(Structure):
         return libsp.dijkstra(byref(self), origin, destination).contents
     def update_edge(self, origin, destination, weight):
         return libsp.update_edge(byref(self), origin, destination, weight)
+    def writegraph(self, filename):
+        return libsp.writegraph(byref(self), filename)
 
 libsp.simplegraph.restype = POINTER(Graph)
 libsp.readgraph.restype = POINTER(Graph)
@@ -49,7 +51,7 @@ def test():
     sp = g.dijkstra(1, -1)
 
     print("origin:", sp.origin)
-
+    g.writegraph(b"test.mtx")
     for destination in [2, 3]:
         print(destination, sp.distance(destination))
 

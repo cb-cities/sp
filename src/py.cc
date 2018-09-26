@@ -15,12 +15,20 @@ Graph* simplegraph(bool directed) {
 }
 
 //! Create a graph based on MatrixMarket file
+//! \param[in] filename Filename of input graph
 //! \param[in] directed Set if graph is directed or not
 //! \retval graph Pointer to a graph object
 Graph* readgraph(char* filename, bool directed) {
   Graph* graph = new Graph(directed);
   graph->read_graph_matrix_market(filename);
   return graph;
+}
+
+//! Write graph as MatrixMarket file
+//! \param[in] filename Graph filename
+//! \param[in] graph Graph object
+bool writegraph(Graph* graph, char* filename) {
+  return graph->write_graph_matrix_market(filename);
 }
 
 //! Find the shortest path using Dijkstra priority queue
