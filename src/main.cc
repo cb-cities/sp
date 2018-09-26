@@ -26,6 +26,8 @@ int main(int argc, char** argv) {
 
   std::cout << "finished computation at " << std::ctime(&end_time)
             << "elapsed time: " << elapsed_seconds.count() << "s\n";
+
+  graph->write_graph_matrix_market("test.mtx");
   /*
   unsigned i = 0;
   for (const auto& distance : sp.distances) {

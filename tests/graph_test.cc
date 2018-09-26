@@ -71,6 +71,12 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
       // Check shortest path
       REQUIRE(distances.at(3) == Approx(9.1).epsilon(Tolerance));
     }
+
+    // Write graph
+    SECTION("Check write graph") {
+      REQUIRE(graph->write_graph_matrix_market("test-graph-directed.mtx") ==
+              true);
+    }
   }
 
   // Test Single Source Multiple Destinations directed graph

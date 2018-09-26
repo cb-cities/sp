@@ -11,6 +11,7 @@
 #include <sstream>
 #include <tuple>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 //! \brief ShortestPath struct to return source, distance and parents
@@ -90,6 +91,10 @@ class Graph {
   //! \param[in] filename Name of input MatrixMarket file
   //! \retval status File read status
   bool read_graph_matrix_market(const std::string& filename);
+
+  //! Write MatrixMarket graph file format
+  //! \param[in] filename Name of output MatrixMarket file
+  bool write_graph_matrix_market(const std::string& filename);
 
   //! Compute the shortest path using priority queue
   //! \param[in] source ID of source vertex1

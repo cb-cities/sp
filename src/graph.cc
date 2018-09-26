@@ -96,6 +96,28 @@ bool Graph::read_graph_matrix_market(const std::string& filename) {
   return status;
 }
 
+// Write MatrixMarket graph file format
+bool Graph::write_graph_matrix_market(const std::string& filename) {
+  bool status = true;
+  try {
+    std::ofstream file(filename.c_str());
+    if (file.is_open()) {
+      file << "%%MatrixMarket matrix coordinate real general\n%\n";
+      file << this->nvertices_ << " " << this->nvertices_ << " "
+           << this->edges_.size() << "\n";
+      for (const auto& edge : this->edges_)
+        file << std::get<0>(edge.first) << " " << std::get<1>(edge.first) << " "
+             << edge.second->second << "\n";
+    } else {
+      throw std::runtime_error("Output file not found");
+    }
+  } catch (std::exception& exception) {
+    std::cout << "Write matrix market file: " << exception.what() << "\n";
+    status = false;
+  }
+  return status;
+}
+
 void Graph::generate_simple_graph() {
   this->assign_nvertices(7);
   // set up a simple graph
