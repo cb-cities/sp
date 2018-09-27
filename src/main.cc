@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 
   // const auto distances = graph->dijkstra_priority_queue(1, -1);
   auto start = std::chrono::system_clock::now();
-  const auto sp = graph->dijkstra_priority_queue(1020, -1);
+  const auto sp = graph->dijkstra_priority_queue(1, -1);
   auto end = std::chrono::system_clock::now();
 
   std::chrono::duration<double> elapsed_seconds = end - start;
