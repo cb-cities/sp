@@ -138,6 +138,12 @@ void Graph::generate_simple_graph() {
 std::vector<Graph::vertex_t> Graph::dijkstra(Graph::vertex_t source,
                                              Graph::vertex_t destination) {
 
+  // Create a vector of path
+  std::vector<vertex_t> path;
+  if (source < 0 || source > nvertices_ || destination < 0 ||
+      destination > nvertices_)
+    return path;
+
   // Using lambda to compare elements.
   auto compare = [](std::pair<Graph::weight_t, Graph::vertex_t> left,
                     std::pair<Graph::weight_t, Graph::vertex_t> right) {
@@ -192,7 +198,6 @@ std::vector<Graph::vertex_t> Graph::dijkstra(Graph::vertex_t source,
     }
   }
 
-  std::vector<vertex_t> path;
   path.emplace_back(destination);
   // Iterate until source has been reached
   while (destination != source) {
