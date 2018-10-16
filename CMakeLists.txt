@@ -29,6 +29,14 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
 endif()
 
+# CMake Modules
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
+# Boost Archive
+find_package(Boost REQUIRED COMPONENTS)
+include_directories(${BOOST_INCLUDE_DIRS})
+#link_libraries(${Boost_HEAP_LIBRARY})
+
 # CMake seems to have no way to enable/disable testing per subproject,
 # so we provide an option similar to BUILD_TESTING, but just for SP.
 option(SP_BUILD_TESTING "enable testing for sp" ON)

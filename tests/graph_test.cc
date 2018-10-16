@@ -1,3 +1,4 @@
+#include <chrono>
 #include <memory>
 
 #include "catch.hpp"
@@ -40,6 +41,12 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
       distances = sp.distances;
       // Check shortest path
       REQUIRE(distances.at(3) == Approx(3.7).epsilon(Tolerance));
+      // Run Dijkstra Fibonacci heap
+      auto fh_sp = graph->dijkstra_fibonacci_heap(source, destination);
+      // Get distances
+      auto fh_distances = fh_sp.distances;
+      // Check shortest path
+      REQUIRE(fh_distances.at(3) == Approx(3.7).epsilon(Tolerance));
     }
 
     // Check remove edge
@@ -57,6 +64,13 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
       graph->remove_edge(2, 4);
       // Run Dijkstra Priority Queue
       sp = graph->dijkstra_priority_queue(source, destination);
+      // Get distances
+      distances = sp.distances;
+      // Check shortest path
+      REQUIRE(distances.at(3) == Approx(9.1).epsilon(Tolerance));
+
+      // Run Dijkstra Fibonacci heap
+      sp = graph->dijkstra_fibonacci_heap(source, destination);
       // Get distances
       distances = sp.distances;
       // Check shortest path
@@ -100,6 +114,13 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
       distances = sp.distances;
       // Check shortest path
       REQUIRE(distances.at(3) == Approx(9.1).epsilon(Tolerance));
+
+      // Run Dijkstra Fibonacci Heap
+      sp = graph->dijkstra_fibonacci_heap(source, destination);
+      // Get distances
+      distances = sp.distances;
+      // Check shortest path
+      REQUIRE(distances.at(3) == Approx(9.1).epsilon(Tolerance));
     }
   }
 
@@ -117,14 +138,39 @@ TEST_CASE("Graph class and shortest-path is checked", "[graph][sp][od]") {
     // Run Dijkstra Priority Queue
     Graph::vertex_t source = 1020;
     Graph::vertex_t destination = 20;
-    auto sp = graph->dijkstra_priority_queue(source, destination);
-    // Get distances
-    auto distances = sp.distances;
 
-    // Check distances
-    REQUIRE(distances.size() == graph->nvertices());
-    // Check shortest path
-    REQUIRE(distances.at(20) == Approx(12409.660000000002).epsilon(Tolerance));
+    SECTION("Dijkstra Priority Queue") {
+      auto start = std::chrono::system_clock::now();
+      const auto sp = graph->dijkstra_priority_queue(source, destination);
+      auto end = std::chrono::system_clock::now();
+      std::chrono::duration<double> elapsed_seconds = end - start;
+      std::cout << "PQ: " << elapsed_seconds.count() << "s\n";
+
+      // Get distances
+      auto distances = sp.distances;
+
+      // Check distances
+      REQUIRE(distances.size() == graph->nvertices());
+      // Check shortest path
+      REQUIRE(distances.at(20) ==
+              Approx(12409.660000000002).epsilon(Tolerance));
+    }
+
+    SECTION("Dijkstra Fibonacci Heap") {
+      auto start = std::chrono::system_clock::now();
+      auto sp = graph->dijkstra_fibonacci_heap(source, destination);
+      auto end = std::chrono::system_clock::now();
+      std::chrono::duration<double> elapsed_seconds = end - start;
+      std::cout << "PQ: " << elapsed_seconds.count() << "s\n";
+      // Get distances
+      auto distances = sp.distances;
+
+      // Check distances
+      REQUIRE(distances.size() == graph->nvertices());
+      // Check shortest path
+      REQUIRE(distances.at(20) ==
+              Approx(12409.660000000002).epsilon(Tolerance));
+    }
 
     SECTION("Test non-existant file") {
       // Create graph object

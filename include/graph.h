@@ -14,6 +14,8 @@
 #include <utility>
 #include <vector>
 
+#include <boost/heap/fibonacci_heap.hpp>
+
 //! \brief ShortestPath struct to return source, distance and parents
 struct ShortestPath {
   //! Vertex id type
@@ -47,6 +49,24 @@ struct ShortestPath {
   std::vector<weight_t> distances;
   //! Parent array to store shortest path tree
   std::vector<vertex_t> parent;
+};
+
+
+/// Data structure to store Key-Value pairs in a 
+/// PriorityQueue (as a Fibonacci heap)
+struct ValueKey {
+  //! Vertex id type
+  using vertex_t = int;
+  //! Weight type, that can be added with +
+  using weight_t = double;
+
+  weight_t distance_;
+  vertex_t vertex_;
+  ValueKey(weight_t distance, vertex_t vertex)
+      : distance_{distance}, vertex_{vertex} {}
+  /// The relation establishes the order in the PriorityQueue
+  inline bool operator<(ValueKey const& rhs) const {
+    return distance_ > rhs.distance_; }
 };
 
 //! \brief Graph class to store vertices and edge and compute shortest path
@@ -101,6 +121,13 @@ class Graph {
   //! \param[in] destination ID of destination vertex (default is -1 for SSSP)
   //! \retval sp Shortest path and distances
   ShortestPath dijkstra_priority_queue(vertex_t source,
+                                       vertex_t destination = -1);
+
+  //! Compute the shortest path using fibonacci heap
+  //! \param[in] source ID of source vertex1
+  //! \param[in] destination ID of destination vertex (default is -1 for SSSP)
+  //! \retval sp Shortest path and distances
+  ShortestPath dijkstra_fibonacci_heap(vertex_t source,
                                        vertex_t destination = -1);
 
  private:
