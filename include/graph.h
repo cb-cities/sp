@@ -14,6 +14,8 @@
 #include <utility>
 #include <vector>
 
+#include "tsl/robin_map.h"
+
 //! \brief ShortestPath struct to return source, distance and parents
 struct ShortestPath {
   //! Vertex id type
@@ -115,7 +117,7 @@ class Graph {
   // Edges
   std::map<std::tuple<vertex_t, vertex_t>, std::shared_ptr<Edge>> edges_;
   // adjacency list with iteration over each edge
-  std::unordered_map<vertex_t, std::vector<std::shared_ptr<Edge>>>
+  tsl::robin_map<vertex_t, std::vector<std::shared_ptr<Edge>>>
       vertex_edges_;
 };
 
