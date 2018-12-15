@@ -117,8 +117,7 @@ class Graph {
   // Edges
   std::map<std::tuple<vertex_t, vertex_t>, std::shared_ptr<Edge>> edges_;
   // adjacency list with iteration over each edge
-  tsl::robin_map<vertex_t, std::vector<std::shared_ptr<Edge>>>
-      vertex_edges_;
+  tsl::robin_map<vertex_t, std::vector<std::shared_ptr<Edge>>> vertex_edges_;
 };
 
 #endif  // _GRAPH_H_
