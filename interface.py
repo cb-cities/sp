@@ -3,7 +3,10 @@ from __future__ import print_function
 from sys import argv
 from ctypes import *
 
-libsp = cdll.LoadLibrary("./build/liblsp.so")
+import os 
+absolute_path = os.path.dirname(os.path.abspath(__file__))
+
+libsp = cdll.LoadLibrary(absolute_path+"/build/liblsp.dylib")
 libsp.distance.restype = c_double
 
 class ShortestPath(Structure):

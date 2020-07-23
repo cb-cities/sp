@@ -40,7 +40,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 include_directories(BEFORE
   ${sp_SOURCE_DIR}/include/
   ${sp_SOURCE_DIR}/external/
-  /usr/local/include/
 )
 
 # sp executable
@@ -55,9 +54,8 @@ add_library(lsp SHARED ${sp_src} ${sp_SOURCE_DIR}/src/py.cc)
 # Unit test
 if(SP_BUILD_TESTING)
   SET(test_src
-    #${sp_SOURCE_DIR}/tests/test_main.cc
-    #${sp_SOURCE_DIR}/tests/graph_test.cc
-    ${sp_SOURCE_DIR}/test_2/hello.cpp
+    ${sp_SOURCE_DIR}/tests/test_main.cc
+    ${sp_SOURCE_DIR}/tests/graph_test.cc
     )
   add_executable(sptest ${sp_src} ${test_src})
   add_test(NAME sptest COMMAND $<TARGET_FILE:sptest>)
