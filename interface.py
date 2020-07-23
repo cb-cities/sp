@@ -25,6 +25,8 @@ class ShortestPath(Structure):
             parent = self.parent(destination)
             yield from self.route(parent)
             yield parent, destination
+    def clear(self):
+        return libsp.clear(byref(self))
 
 libsp.dijkstra.restype = POINTER(ShortestPath)
 

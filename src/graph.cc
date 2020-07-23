@@ -148,8 +148,8 @@ ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
     return sp;
 
   // Using lambda to compare elements.
-  auto compare = [](std::pair<Graph::weight_t, Graph::vertex_t> left,
-                    std::pair<Graph::weight_t, Graph::vertex_t> right) {
+  auto compare = [](const std::pair<Graph::weight_t, Graph::vertex_t>& left,
+                    const std::pair<Graph::weight_t, Graph::vertex_t>& right) {
     return left.first > right.first;
   };
 

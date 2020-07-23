@@ -24,6 +24,7 @@ path_pq = [vertex[1] for vertex in route_pq]
 ta3 = time.time()
 print('PQ: distance 1020-->20: ', sp_pq.distance(20))
 print('PQ: total time {}, dijkstra() {}, route() {}, vertex list {}, \n'.format(ta3-ta0, ta1-ta0, ta2-ta1, ta3-ta2))
+sp_pq.clear
 
 # Time igraph
 print('############## igraph ################')

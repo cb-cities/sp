@@ -60,6 +60,9 @@ double distance(ShortestPath* sp, int destination) {
                                     : sp->distances[destination]);
 }
 
+//! Delete Shortest Path
+void clear(ShortestPath* sp) { delete sp; }
+
 //! return the parent of a vertex in shortest path tree
 //! \param[in] sp Shortest path object
 //! \param[in] destination Destination of the shortest path
