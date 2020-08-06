@@ -134,6 +134,20 @@ void Graph::generate_simple_graph() {
   this->add_edge(5, 6, 9.7);
 }
 
+// Create graph based on edges from Pandas DataFrame
+void Graph::generate_graph(int * edge_starts, int * edge_ends, double * edge_wghs, int nvertices_input) {
+  // std::cout << nvertices << std::endl;
+  this->assign_nvertices(nvertices_input + 1);
+  
+  for (unsigned int e=0; e<nvertices_input; e++) {
+    int v1 = edge_starts[e];
+    int v2 = edge_ends[e];
+    double weight = edge_wghs[e];
+    // std::cout << v1 << " " << v2 << " " << weight << std::endl;
+    this->add_edge(v1, v2, weight);
+  }
+}
+
 // Dijktra shortest paths from src to all other vertices
 ShortestPath Graph::dijkstra_priority_queue(vertex_t source,
                                             vertex_t destination) {

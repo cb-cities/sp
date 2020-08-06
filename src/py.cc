@@ -24,6 +24,22 @@ Graph* readgraph(char* filename, bool directed) {
   return graph;
 }
 
+//! Create a graph based on edges from Pandas DataFrame
+//! \param[in] name of the dataframe column containing edge start nodes
+//! \param[in] name of the dataframe column containing edge end nodes
+//! \param[in] name of the dataframe column containing edge weights
+//! \param[in] numbers of vertices
+//! \retval graph Pointer to a graph object
+Graph* creategraph(int * edge_starts, 
+  int * edge_ends, 
+  double * edge_wghs,
+  int nvertices,
+  bool directed) {
+  Graph* graph = new Graph(directed);
+  graph->generate_graph(edge_starts, edge_ends, edge_wghs, nvertices);
+  return graph;
+}
+
 //! Write graph as MatrixMarket file
 //! \param[in] filename Graph filename
 //! \param[in] graph Graph object

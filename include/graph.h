@@ -89,6 +89,18 @@ class Graph {
   //! Generate a simple graph
   void generate_simple_graph();
 
+  //! Create a graph based on edges from Pandas DataFrame
+  //! \param[in] name of the dataframe column containing edge start nodes
+  //! \param[in] name of the dataframe column containing edge end nodes
+  //! \param[in] name of the dataframe column containing edge weights
+  //! \param[in] numbers of vertices
+  //! \retval graph Pointer to a graph object
+  void generate_graph(
+    int * edge_starts, 
+    int * edge_ends, 
+    double * edge_wghs,
+    int nvertices_input); 
+
   //! Read MatrixMarket graph file format
   //! \param[in] filename Name of input MatrixMarket file
   //! \retval status File read status
