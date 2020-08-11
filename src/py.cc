@@ -29,14 +29,10 @@ Graph* readgraph(char* filename, bool directed) {
 //! \param[in] name of the dataframe column containing edge end nodes
 //! \param[in] name of the dataframe column containing edge weights
 //! \param[in] numbers of edges (number of rows in the edges dataframe)
-//! \param[in] numbers of vertices (maximum of start and end node ids in the edges dataframe)
-//! \retval graph Pointer to a graph object
-Graph* creategraph(int * edge_starts, 
-  int * edge_ends, 
-  double * edge_wghs,
-  int nedges,
-  int nvertices,
-  bool directed) {
+//! \param[in] numbers of vertices (maximum of start and end node ids in the
+//! edges dataframe) \retval graph Pointer to a graph object
+Graph* creategraph(int* edge_starts, int* edge_ends, double* edge_wghs,
+                   int nedges, int nvertices, bool directed) {
   Graph* graph = new Graph(directed);
   graph->generate_graph(edge_starts, edge_ends, edge_wghs, nedges, nvertices);
   return graph;

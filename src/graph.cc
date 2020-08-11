@@ -135,11 +135,12 @@ void Graph::generate_simple_graph() {
 }
 
 // Create graph based on edges from Pandas DataFrame
-void Graph::generate_graph(int * edge_starts, int * edge_ends, double * edge_wghs, int nedges, int nvertices) {
+void Graph::generate_graph(int* edge_starts, int* edge_ends, double* edge_wghs,
+                           int nedges, int nvertices) {
   // std::cout << nvertices << std::endl;
   this->assign_nvertices(nvertices + 1);
-  
-  for (unsigned int e=0; e<nedges; e++) {
+
+  for (unsigned int e = 0; e < nedges; e++) {
     int v1 = edge_starts[e];
     int v2 = edge_ends[e];
     double weight = edge_wghs[e];
