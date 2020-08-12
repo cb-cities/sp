@@ -90,12 +90,12 @@ class Graph {
   void generate_simple_graph();
 
   //! Create a graph based on edges from Pandas DataFrame
-  //! \param[in] name of the dataframe column containing edge start nodes
-  //! \param[in] name of the dataframe column containing edge end nodes
-  //! \param[in] name of the dataframe column containing edge weights
-  //! \param[in] numbers of edges (number of rows in the input edges dataframe)
-  //! \param[in] numbers of vertices (maximum of start and end node ids in the
-  //! edges dataframe) \retval graph Pointer to a graph object
+  //! \param[in] edge_starts name of the dataframe column containing edge start nodes
+  //! \param[in] edge_ends name of the dataframe column containing edge end nodes
+  //! \param[in] edge_wghs name of the dataframe column containing edge weights
+  //! \param[in] nedges numbers of edges (number of rows in the edges dataframe)
+  //! \param[in] nvertices numbers of vertices (maximum of start and end node ids in the
+  //! edges dataframe) 
   void generate_graph(int* edge_starts, int* edge_ends, double* edge_wghs,
                       int nedges, int nvertices);
 
