@@ -34,7 +34,8 @@ struct ShortestPath {
     // Iterate until source has been reached
     while (destination != source) {
       destination = parent.at(destination);
-      if (destination != source) path.emplace_back(destination);
+      if (destination != source)
+        path.emplace_back(destination);
     }
     // Reverse to arrange from source to destination
     std::reverse(path.begin(), path.end());
@@ -54,7 +55,7 @@ struct ShortestPath {
 //! \brief Graph class to store vertices and edge and compute shortest path
 //! \details Graph class has Priority Queue Dijkstra algorithm for SSSP
 class Graph {
- public:
+public:
   //! Vertex id type
   using vertex_t = int;
   //! Weight type, that can be added with +
@@ -90,23 +91,23 @@ class Graph {
   void generate_simple_graph();
 
   //! Create a graph based on edges from Pandas DataFrame
-  //! \param[in] edge_starts name of the dataframe column containing edge start nodes
-  //! \param[in] edge_ends name of the dataframe column containing edge end nodes
-  //! \param[in] edge_wghs name of the dataframe column containing edge weights
-  //! \param[in] nedges numbers of edges (number of rows in the edges dataframe)
-  //! \param[in] nvertices numbers of vertices (maximum of start and end node ids in the
-  //! edges dataframe) 
-  void generate_graph(int* edge_starts, int* edge_ends, double* edge_wghs,
+  //! \param[in] edge_starts name of the dataframe column containing edge start
+  //! nodes \param[in] edge_ends name of the dataframe column containing edge
+  //! end nodes \param[in] edge_wghs name of the dataframe column containing
+  //! edge weights \param[in] nedges numbers of edges (number of rows in the
+  //! edges dataframe) \param[in] nvertices numbers of vertices (maximum of
+  //! start and end node ids in the edges dataframe)
+  void generate_graph(int *edge_starts, int *edge_ends, double *edge_wghs,
                       int nedges, int nvertices);
 
   //! Read MatrixMarket graph file format
   //! \param[in] filename Name of input MatrixMarket file
   //! \retval status File read status
-  bool read_graph_matrix_market(const std::string& filename);
+  bool read_graph_matrix_market(const std::string &filename);
 
   //! Write MatrixMarket graph file format
   //! \param[in] filename Name of output MatrixMarket file
-  bool write_graph_matrix_market(const std::string& filename);
+  bool write_graph_matrix_market(const std::string &filename);
 
   //! Compute the shortest path using priority queue
   //! \param[in] source ID of source vertex1
@@ -115,7 +116,7 @@ class Graph {
   ShortestPath dijkstra_priority_queue(vertex_t source,
                                        vertex_t destination = -1);
 
- private:
+private:
   //! Assign number of vertices
   //! \param[in] nvertices Number of vertices in graph
   void assign_nvertices(unsigned nvertices) { this->nvertices_ = nvertices; }
@@ -130,4 +131,4 @@ class Graph {
   tsl::robin_map<vertex_t, std::vector<std::shared_ptr<Edge>>> vertex_edges_;
 };
 
-#endif  // _GRAPH_H_
+#endif // _GRAPH_H_
