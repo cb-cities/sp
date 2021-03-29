@@ -10,7 +10,7 @@ pexpect==4.6.0
 pickleshare==0.7.4
 prompt-toolkit==1.0.15
 ptyprocess==0.5.2
-Pygments==2.2.0
+Pygments==2.7.4
 python-igraph==0.7.1.post6
 scipy==1.1.0
 simplegeneric==0.8.1
