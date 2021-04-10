@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 from sys import argv
-from ctypes import *
+from ctypes import c_bool, c_int, c_int32, c_double, cdll, byref, Structure, POINTER
 from numpy.ctypeslib import ndpointer
 import pandas as pd
 import numpy as np
@@ -9,7 +9,7 @@ import numpy as np
 import os 
 absolute_path = os.path.dirname(os.path.abspath(__file__))
 
-libsp = cdll.LoadLibrary(absolute_path+"/build/liblsp.dylib")
+libsp = cdll.LoadLibrary(absolute_path+"/build/liblsp.so")
 libsp.distance.restype = c_double
 
 class ShortestPath(Structure):
@@ -70,7 +70,7 @@ def from_dataframe(edges=None, start_node_col=None, end_node_col=None, weight_co
 def test():
     g = simplegraph()
     #g = readgraph(b"../sf.mtx")
-    res = g.update_edge(1, 3, c_double(0.5))
+    g.update_edge(1, 3, c_double(0.5))
     sp = g.dijkstra(1, -1)
 
     print("origin:", sp.origin)
