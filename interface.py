@@ -9,7 +9,7 @@ import numpy as np
 import os 
 absolute_path = os.path.dirname(os.path.abspath(__file__))
 
-libsp = cdll.LoadLibrary(absolute_path+"/build/liblsp.so")
+libsp = cdll.LoadLibrary(absolute_path+"/build/liblsp.dylib")
 libsp.distance.restype = c_double
 
 class ShortestPath(Structure):
