@@ -11,7 +11,7 @@
 
 ## Compile
 
-* Run `mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release /path/to/CMakeLists.txt`.
+* Run `mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release ../`.
 
 * Run `make clean && make -jN` (where N is the number of cores).
 
