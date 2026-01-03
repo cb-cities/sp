@@ -1,6 +1,8 @@
 from __future__ import print_function
 
+import sys
 from sys import argv
+from pathlib import Path
 from ctypes import c_bool, c_int, c_int32, c_double, cdll, byref, Structure, POINTER
 from numpy.ctypeslib import ndpointer
 import pandas as pd
@@ -9,7 +11,17 @@ import numpy as np
 import os 
 absolute_path = os.path.dirname(os.path.abspath(__file__))
 
-libsp = cdll.LoadLibrary(absolute_path+"/build/liblsp.so")
+root = Path(absolute_path) / "build"
+
+if sys.platform == "darwin":
+    ext = ".dylib"
+elif sys.platform.startswith("win"):
+    ext = ".dll"
+else:
+    ext = ".so"
+
+libsp = cdll.LoadLibrary(str(root / f"liblsp{ext}"))
+
 libsp.distance.restype = c_double
 
 class ShortestPath(Structure):

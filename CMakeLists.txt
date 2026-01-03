@@ -1,9 +1,11 @@
+cmake_minimum_required(VERSION 3.15...3.29)
+
 project(sp LANGUAGES CXX)
 
 # Require C++14-compliant compiler; only available for CMake v. 3.1 and up
 set(CMAKE_CXX_STANDARD 14)
-
-cmake_minimum_required(VERSION 3.1)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 SET(CMAKE_COLOR_MAKEFILE ON)
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
